@@ -1,0 +1,4 @@
+{
+    "ignoreDirs":[".git"],
+    "ignoreFiles":[".gitignore"]
+}

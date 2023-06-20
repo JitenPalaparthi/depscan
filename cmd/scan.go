@@ -11,15 +11,15 @@ var outFile string
 
 func init() {
 
-	genCmd.Flags().StringVarP(&path, "path", "p", ".", "user has to provide path.Ideally this is a git repository path")
-	genCmd.Flags().StringVarP(&format, "format", "f", "json", "output file format. We support two formats json|yaml")
-	genCmd.Flags().Uint8VarP(&depth, "depth", "d", 1, "the depth of directory recursion for file scans")
-	genCmd.Flags().StringVarP(&outFile, "out", "o", "output.json", "user has to provide output file name")
+	scanCmd.Flags().StringVarP(&path, "path", "p", ".", "user has to provide path.Ideally this is a git repository path")
+	scanCmd.Flags().StringVarP(&format, "format", "f", "json", "output file format. We support two formats json|yaml")
+	scanCmd.Flags().Uint8VarP(&depth, "depth", "d", 1, "the depth of directory recursion for file scans")
+	scanCmd.Flags().StringVarP(&outFile, "out", "o", "output.json", "user has to provide output file name")
 
-	rootCmd.AddCommand(genCmd)
+	rootCmd.AddCommand(scanCmd)
 }
 
-var genCmd = &cobra.Command{
+var scanCmd = &cobra.Command{
 	Use:   "scan",
 	Short: "scan scans a given repository",
 	Long:  "scan scans a given repository provided by given path",

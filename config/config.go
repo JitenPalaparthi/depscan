@@ -9,8 +9,15 @@ import (
 var configFile string
 
 type Config struct {
-	IgnoreDirs  []string `json:"ignoreDirs"`
-	IgnoreFiles []string `json:"ignoreFiles"`
+	IgnoreDirs  []string     `json:"ignoreDirs"`
+	IgnoreFiles []string     `json:"ignoreFiles"`
+	DepManagers []DepManager `json:"depManagers"`
+}
+
+type DepManager struct {
+	Lang     string `json:"lang"`
+	DepTool  string `json:"depTool"`
+	FileName string `json:"fileName"`
 }
 
 func New() (*Config, error) {

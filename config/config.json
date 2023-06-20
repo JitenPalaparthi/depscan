@@ -1,4 +1,41 @@
 {
-    "ignoreDirs":[".git"],
-    "ignoreFiles":[".gitignore"]
+  "ignoreDirs": [".git"],
+  "ignoreFiles": [".gitignore"],
+  "depManagers": [
+    {
+      "lang": "Java",
+      "depTool": "maven",
+      "fileName": "pom.xml"
+    },
+    {
+      "lang": "Java",
+      "depTool": "gradle",
+      "fileName": "build.gradle"
+    },
+    {
+      "lang": "JavaScript",
+      "depTool": "npm",
+      "fileName": "package-lock.json"
+    },
+    {
+        "lang": "Python",
+        "depTool": "pip",
+        "fileName": "requirements.txt"
+      },
+      {
+        "lang": "Python",
+        "depTool": "pipenv",
+        "fileName": "Pipfile.lock"
+      },
+      {
+        "lang": "Python",
+        "depTool": "poetry",
+        "fileName": "poetry.lock"
+      }, {
+        "lang": "Go",
+        "depTool": "mod",
+        "fileName": "go.sum"
+      }
+
+  ]
 }

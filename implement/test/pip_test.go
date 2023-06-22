@@ -9,7 +9,8 @@ import (
 
 func TestXxx(t *testing.T) {
 	pip := new(implement.Pip)
-	gdeps, err := pip.Scan("requirements.txt")
+	pip.FilePath = "requirements.txt"
+	gdeps, err := pip.Scan()
 	fmt.Println(gdeps, err)
 	if err != nil {
 		t.Fail()

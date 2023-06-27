@@ -25,7 +25,7 @@ func init() {
 	scanCmd.Flags().StringVarP(&path, "path", "p", ".", "user has to provide path.Ideally this is a git repository path")
 	scanCmd.Flags().StringVarP(&format, "format", "f", "json", "output file format. We support two formats json|yaml")
 	scanCmd.Flags().Uint8VarP(&depth, "depth", "d", 3, "the depth of directory recursion for file scans")
-	scanCmd.Flags().StringVarP(&outFile, "out", "o", "output.json", "user has to provide output file name")
+	scanCmd.Flags().StringVarP(&outFile, "out", "o", "output", "user has to provide output file name")
 
 	rootCmd.AddCommand(scanCmd)
 }
@@ -40,10 +40,11 @@ var scanCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalln(err)
 		}
-		impl, err := implement.New(cnfg, path, depth) // create an instance of implement
+		impl, err := implement.New(cnfg, path, fmt.Sprint(outFile, ".", format), depth) // create an instance of implement
 		if err != nil {
 			log.Fatalln(err)
 		}
+		fmt.Println(impl)
 		err = impl.Feed() // feed required data for the implement object3
 		if err != nil {
 			log.Fatalln(err)
@@ -78,7 +79,11 @@ var scanCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalln(err)
 		}
-		log.Println(deps)
+		err = impl.Write(deps)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
 		fmt.Println("Directory count", impl.DirCount, "\nFile Count", impl.FileCount)
 	},
 }

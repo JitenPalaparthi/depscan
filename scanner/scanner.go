@@ -5,9 +5,9 @@ type Scanner interface {
 }
 
 type Dep struct {
-	Name    string
-	Version string
-	Direct  bool
-	Source  string
-	Type    string
+	Name    string `json:"name" yaml:"name"`
+	Version string `json:"version" yaml:"version"`
+	Direct  bool   `json:"direct" yaml:"direct"`
+	Source  string `json:"source" yaml:"source"`
+	Type    string `json:"type" yaml:"type"`
 }

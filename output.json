@@ -1,0 +1,28 @@
+{
+  "path": "/home/jiten/workspace/projects/depscan/test_repos/python/eLearning",
+  "count": 3,
+  "languages": ["Python"],
+  "items": [
+    {
+      "name": "Django",
+      "version": "1.9.5",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/python/eLearning/requirements",
+      "type": "pip"
+    },
+    {
+      "name": "django-crispy-forms",
+      "version": "1.6.0",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/python/eLearning/requirements",
+      "type": "pip"
+    },
+    {
+      "name": "django-registration-redux",
+      "version": "1.4",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/python/eLearning/requirements",
+      "type": "pip"
+    }
+  ]
+}

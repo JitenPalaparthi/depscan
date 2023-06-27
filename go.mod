@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/golang/glog v1.1.1
 	github.com/spf13/cobra v1.7.0
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (

@@ -1,7 +1,7 @@
 # depscan
 
 - depscan is dependency/package manager scanner.It scans dependency files of respective programming languages.
-- Maven Jave    - pom.xml
+- Maven Java    - pom.xml
 - Gradle Java   - build.gradle
 - Pip Python    - requirements
 - npm Node      - package-lock.json
@@ -57,3 +57,7 @@ Use "depscan [command] --help" for more information about a command.
   -o, --out string      user has to provide output file name (default "output")
   -p, --path string     user has to provide path.Ideally this is a git repository path (default ".")
   ```
+
+  - depscan command example
+
+  ```depscan scan --depth=3 --path=/tmp/test_repos/python/eLearning```

@@ -11,18 +11,19 @@ import (
 )
 
 type Gradle struct {
-	FilePath string
+	FilePaths []string
 }
 
 func (g *Gradle) Scan() ([]scan.Dep, error) {
 	gdeps := make([]scan.Dep, 0)
-	inFile, err := os.Open(g.FilePath)
+	inFile, err := os.Open(g.FilePaths[0])
 	if err != nil {
 		log.Println(err)
 		return nil, nil
 	}
 	defer inFile.Close()
 
+	fmt.Println("---------------XXXXX", inFile)
 	scanner := bufio.NewScanner(inFile)
 	found := false
 	//lines := make([]string, 0)
@@ -47,7 +48,7 @@ func (g *Gradle) Scan() ([]scan.Dep, error) {
 			gdep.Name = line[fi+1 : li]
 			//todo discuss and implement
 			//gdep.Version = strs[1] // Unable to determine version. Some lines do not have version
-			gdep.Source = g.FilePath
+			gdep.Source = g.FilePaths[0]
 			gdeps = append(gdeps, gdep)
 		}
 	}

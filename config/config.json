@@ -1,47 +1,47 @@
 {
-  "ignoreDirs": [".git"],
+  "ignoreDirs": [".git","static_files"],
   "ignoreFiles": [".gitignore"],
   "depManagers": [
     {
       "lang": "Java",
       "depTool": "maven",
-      "fileName": "pom.xml",
+      "fileNames": ["pom.xml"],
       "fileExt": ".java"
     },
     {
       "lang": "Java",
       "depTool": "gradle",
-      "fileName": "build.gradle",
+      "fileNames": ["build.gradle"],
       "fileExt": ".java"
     },
     {
       "lang": "JavaScript",
       "depTool": "npm",
-      "fileName": "package-lock.json",
+      "fileNames": ["package-lock.json"],
       "fileExt": ".js"
     },
     {
       "lang": "Python",
       "depTool": "pip",
-      "fileName": "requirements",
+      "fileNames": ["requirements.txt","requirements"],
       "fileExt": ".py"
     },
     {
       "lang": "Python",
       "depTool": "pipenv",
-      "fileName": "Pipfile.lock",
+      "fileNames": ["Pipfile.lock"],
       "fileExt": ".py"
     },
     {
       "lang": "Python",
       "depTool": "poetry",
-      "fileName": "poetry.lock",
+      "fileNames": ["poetry.lock"],
        "fileExt":".py"
     },
     {
       "lang": "Go",
       "depTool": "mod",
-      "fileName": "go.sum",
+      "fileNames": ["go.sum"],
       "fileExt":".go"
     }
   ]

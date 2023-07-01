@@ -1,28 +1,175 @@
 {
-  "path": "/home/jiten/workspace/projects/depscan/test_repos/python/eLearning",
-  "count": 3,
-  "languages": ["Python"],
+  "path": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul",
+  "count": 24,
+  "languages": null,
   "items": [
     {
-      "name": "Django",
-      "version": "1.9.5",
+      "name": "org.openrewrite.recipe:rewrite-recipe-bom:2.0.1",
+      "version": "",
       "direct": true,
-      "source": "/home/jiten/workspace/projects/depscan/test_repos/python/eLearning/requirements",
-      "type": "pip"
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
     },
     {
-      "name": "django-crispy-forms",
-      "version": "1.6.0",
+      "name": "org.openrewrite.recipe:rewrite-logging-frameworks",
+      "version": "",
       "direct": true,
-      "source": "/home/jiten/workspace/projects/depscan/test_repos/python/eLearning/requirements",
-      "type": "pip"
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
     },
     {
-      "name": "django-registration-redux",
-      "version": "1.4",
+      "name": "org.openrewrite.recipe:rewrite-testing-frameworks",
+      "version": "",
       "direct": true,
-      "source": "/home/jiten/workspace/projects/depscan/test_repos/python/eLearning/requirements",
-      "type": "pip"
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-recipe-bom:2.0.1",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-logging-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-testing-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-recipe-bom:2.0.1",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-logging-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-testing-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-recipe-bom:2.0.1",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-logging-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-testing-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-recipe-bom:2.0.1",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-logging-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-testing-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-recipe-bom:2.0.1",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-logging-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-testing-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-recipe-bom:2.0.1",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-logging-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-testing-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-recipe-bom:2.0.1",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-logging-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
+    },
+    {
+      "name": "org.openrewrite.recipe:rewrite-testing-frameworks",
+      "version": "",
+      "direct": true,
+      "source": "/home/jiten/workspace/projects/depscan/test_repos/gradle/zuul/build.gradle",
+      "type": "gradle"
     }
   ]
 }

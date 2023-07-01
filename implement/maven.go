@@ -11,7 +11,7 @@ import (
 )
 
 type Maven struct {
-	FilePath string
+	FilePaths []string
 }
 
 type Result struct {
@@ -29,7 +29,7 @@ func (m *Maven) Scan() ([]scan.Dep, error) {
 	gdeps := make([]scan.Dep, 0)
 	result := new(Result)
 
-	inFile, err := os.Open(m.FilePath)
+	inFile, err := os.Open(m.FilePaths[0])
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (m *Maven) Scan() ([]scan.Dep, error) {
 		gdep.Type = "maven"
 		gdep.Name = dependency.GroupID + ":" + dependency.ArtifactId
 		gdep.Version = dependency.Version
-		gdep.Source = m.FilePath
+		gdep.Source = m.FilePaths[0]
 		gdeps = append(gdeps, gdep)
 	}
 	return gdeps, nil

@@ -3,7 +3,6 @@ package implement
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/fs"
 	"io/ioutil"
 	"os"
@@ -11,7 +10,9 @@ import (
 	"strings"
 
 	"github.com/JitenPalaparthi/depscan/config"
+	"github.com/JitenPalaparthi/depscan/helper"
 	"github.com/JitenPalaparthi/depscan/scanner"
+	"github.com/golang/glog"
 	"gopkg.in/yaml.v2"
 )
 
@@ -26,26 +27,31 @@ type Implement struct {
 	DirCount, FileCount int
 }
 
-type Formatter interface {
-	Marshal(v any) ([]byte, error)
-}
+var (
+	ErrNilConfig               = errors.New("nil config")
+	ErrEmptyPath               = errors.New("empty path")
+	ErrInvalidOutfile          = errors.New("invalid outfile")
+	ErrInvalidOutfileFormat    = errors.New("invalid outfile format.It must be json | yaml | yml")
+	ErrNewImplement            = errors.New("use New function to create Implement object")
+	ErrNoDataToGenerateOutfile = errors.New("no data to generate output file")
+)
 
 // New is a function that is used to create/instantiate implement object
 func New(config *config.Config, path string, outfile string, depth uint8) (*Implement, error) {
 	if config == nil {
-		return nil, errors.New("nil config")
+		return nil, ErrNilConfig
 	}
 	if path == "" {
-		return nil, errors.New("empty path")
+		return nil, ErrEmptyPath
 	}
-	if depth <= 0 {
-		return nil, errors.New("invalid depth")
-	}
+	// if depth < 0 {
+	// 	return nil, errors.New("invalid depth")
+	// }
 	if outfile == "" {
-		return nil, errors.New("invalid outfile")
+		return nil, ErrInvalidOutfile
 	}
 	if filepath.Ext(outfile) == "json" || filepath.Ext(outfile) == "yaml" || filepath.Ext(outfile) == "yml" {
-		return nil, errors.New("invalid outfile format.It must be json | yaml | yml")
+		return nil, ErrInvalidOutfileFormat
 	}
 
 	implement := new(Implement)
@@ -57,13 +63,14 @@ func New(config *config.Config, path string, outfile string, depth uint8) (*Impl
 }
 
 func (i *Implement) Feed() error {
-	if i.Config == nil || i.Path == "" || i.Depth <= 0 {
-		return errors.New("use New function to create Implement object")
+	if i.Config == nil || i.Path == "" {
+		return ErrNewImplement
 	}
 	maxDepth := strings.Count(i.Path, string(os.PathSeparator)) + int(i.Depth)
+	glog.Infoln("evaluating depth param.Current depth value:", i.Depth)
 	filepath.WalkDir(i.Path, func(p string, d fs.DirEntry, err error) error {
 		if d.IsDir() && strings.Count(p, string(os.PathSeparator)) > maxDepth {
-			fmt.Println("skip", i.Path)
+			glog.Info("skip path(s):", p)
 			return fs.SkipDir
 		}
 		if d.IsDir() {
@@ -71,15 +78,17 @@ func (i *Implement) Feed() error {
 		} else {
 			i.FileCount++
 		}
+		if d.IsDir() && helper.IsElementExist(i.Config.IgnoreDirs, d.Name()) {
+			glog.Infoln("This is an ignore directory so skipping it. path:", p)
+			return fs.SkipDir
+		}
 		if !d.IsDir() {
-			if isElementExist(i.Config.GetDepFiles(), d.Name()) {
+			if helper.IsElementExist(i.Config.GetDepFiles(), d.Name()) {
 				i.Paths = append(i.Paths, p)
 			}
-			if isElementExist(i.Config.GetExtensions(), filepath.Ext(d.Name())) {
-				if !isElementExist(i.Exts, filepath.Ext(d.Name())) {
+			if helper.IsElementExist(i.Config.GetExtensions(), filepath.Ext(d.Name())) {
+				if !helper.IsElementExist(i.Exts, filepath.Ext(d.Name())) {
 					i.Exts = append(i.Exts, filepath.Ext(d.Name()))
-					// fmt.Println("------->", d.Name())
-					// fmt.Println("----------->", filepath.Ext(d.Name()))
 					Dep := i.Config.GetDepManagerByExt(filepath.Ext(d.Name()))
 					i.Languages = append(i.Languages, Dep.Lang)
 				}
@@ -104,7 +113,7 @@ func (i *Implement) ScanAll(iScanners ...scanner.Scanner) ([]scanner.Dep, error)
 
 func (i *Implement) Write(deps []scanner.Dep) error {
 	if len(deps) == 0 {
-		return errors.New("no files to generate output file")
+		return ErrNoDataToGenerateOutfile
 	}
 	output := new(Output)
 	output.Count = uint16(len(deps))
@@ -128,13 +137,4 @@ func (i *Implement) Write(deps []scanner.Dep) error {
 		return ioutil.WriteFile(i.Outfile, data, 0655)
 	}
 	return nil
-}
-
-func isElementExist(s []string, str string) bool {
-	for _, v := range s {
-		if strings.TrimSpace(v) == strings.TrimSpace(str) {
-			return true
-		}
-	}
-	return false
 }

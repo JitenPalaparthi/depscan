@@ -3,8 +3,8 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"strings"
 
-	"log"
 	"path/filepath"
 
 	"github.com/JitenPalaparthi/depscan/config"
@@ -38,61 +38,85 @@ var scanCmd = &cobra.Command{
 		glog.Infoln("Current path is ", path)
 		cnfg, err := config.New()
 		if err != nil {
-			log.Fatalln(err)
+			glog.Errorln(err)
 		}
-		impl, err := implement.New(cnfg, path, fmt.Sprint(outFile, ".", format), depth) // create an instance of implement
+
+		glog.Infoln("config object:", cnfg)
+		// What if outfile has format?
+		impl, err := implement.New(cnfg, path, fmt.Sprint(strings.TrimSuffix(outFile, filepath.Ext(outFile)), ".", format), depth) // create an instance of implement
 		if err != nil {
-			log.Fatalln(err)
+			glog.Errorln(err)
 		}
-		fmt.Println(impl)
+		glog.Infoln("implement object:", impl)
+
 		err = impl.Feed() // feed required data for the implement object3
 		if err != nil {
-			log.Fatalln(err)
+			glog.Errorln(err)
 		}
+		glog.Infoln("implement object after feed:", impl)
+
 		iscanners := make([]scnr.Scanner, 0)
+		var (
+			pip    *implement.Pip
+			npm    *implement.Npm
+			gradle *implement.Gradle
+			maven  *implement.Maven
+		)
 		for _, v := range impl.Paths {
 			depManager := cnfg.GetDepManagerByFileName(filepath.Base(v))
-			if depManager != nil && isElementExist(impl.Exts, depManager.FileExt) {
+			// The problem is .java files are inside many directories.So the tool might have not found
+			//.java file. Unless it finds a file with .java or .py or .js extention it cannot blindly go and
+			// do the process.Due to .java file directory depth , it is unable to find for gradle and maven.
+			// Hence the below logic is commented.
+			//if depManager != nil && helper.IsElementExist(impl.Exts, depManager.FileExt) {
+			if depManager != nil {
 				switch depManager.DepTool {
 				case "pip":
-					pip := new(implement.Pip)
-					pip.FilePath = v
+					if pip == nil {
+						pip = new(implement.Pip)
+					}
+					pip.FilePaths = append(pip.FilePaths, v)
 					iscanners = append(iscanners, pip)
+					glog.Infoln("Found pip as dependency manager.The Filepath is ", v)
+
 				case "npm":
-					npm := new(implement.Npm)
-					npm.FilePath = v
+					if npm == nil {
+						npm = new(implement.Npm)
+					}
+					npm.FilePaths = append(npm.FilePaths, v)
 					iscanners = append(iscanners, npm)
+					glog.Infoln("Found npm as dependency manager.The Filepath is ", v)
+
 				case "gradle":
-					gradle := new(implement.Gradle)
-					gradle.FilePath = v
+					if gradle == nil {
+						gradle = new(implement.Gradle)
+					}
+					gradle.FilePaths = append(gradle.FilePaths, v)
 					iscanners = append(iscanners, gradle)
+					glog.Infoln("Found gradle as dependency manager.The Filepath is ", v)
+
 				case "maven":
-					maven := new(implement.Maven)
-					maven.FilePath = v
+					if maven == nil {
+						maven = new(implement.Maven)
+					}
+					maven.FilePaths = append(maven.FilePaths, v)
 					iscanners = append(iscanners, maven)
+					glog.Infoln("Found maven as dependency manager.The Filepath is ", v)
+
 				default:
-					log.Println("Unimplemented tool")
+					glog.Infoln("Unimplemented tool")
 				}
 			}
 		}
+		glog.Infoln("There are/is ", len(iscanners), "of scanners to scan")
 		deps, err := impl.ScanAll(iscanners...)
 		if err != nil {
-			log.Fatalln(err)
+			glog.Errorln(err)
 		}
 		err = impl.Write(deps)
 		if err != nil {
-			log.Fatalln(err)
+			glog.Errorln(err)
 		}
-
-		fmt.Println("Directory count", impl.DirCount, "\nFile Count", impl.FileCount)
+		glog.Info("Directory count:", impl.DirCount, "\nFile Count:", impl.FileCount)
 	},
-}
-
-func isElementExist(s []string, str string) bool {
-	for _, v := range s {
-		if v == str {
-			return true
-		}
-	}
-	return false
 }

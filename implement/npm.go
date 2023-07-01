@@ -5,10 +5,16 @@ import (
 )
 
 type Npm struct {
-	FilePath string
+	FilePaths []string
 }
 
 func (m *Npm) Scan() ([]scan.Dep, error) {
 	gdeps := make([]scan.Dep, 0)
+
+	// bytes, err := ioutil.ReadFile(m.FilePath)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
 	return gdeps, nil
 }

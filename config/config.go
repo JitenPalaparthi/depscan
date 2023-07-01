@@ -3,6 +3,9 @@ package config
 import (
 	_ "embed"
 	"encoding/json"
+	"fmt"
+
+	"github.com/JitenPalaparthi/depscan/helper"
 )
 
 //go:embed config.json
@@ -29,9 +32,9 @@ func (c *Config) GetExtensions() []string {
 }
 
 func (c *Config) GetDepFiles() []string {
-	fileNames := make([]string, len(c.DepManagers))
-	for i, v := range c.DepManagers {
-		fileNames[i] = v.FileName
+	fileNames := make([]string, 0)
+	for _, v := range c.DepManagers {
+		fileNames = append(fileNames, v.FileNames...)
 	}
 	return fileNames
 }
@@ -47,7 +50,8 @@ func (c *Config) GetDepManagerByExt(ext string) *DepManager {
 
 func (c *Config) GetDepManagerByFileName(fileName string) *DepManager {
 	for i, v := range c.DepManagers {
-		if v.FileName == fileName {
+		if helper.IsElementExist(v.FileNames, fileName) {
+			fmt.Println(c.DepManagers[i])
 			return &c.DepManagers[i]
 		}
 	}

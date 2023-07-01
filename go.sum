@@ -1,3 +1,5 @@
+github.com/blocktop/go-glog-cobra v0.0.0-20181004141147-1a2e8060f5d2 h1:MQItOp6rb4mEx3aIwlJl4YevCopB8uC45BvVeUFhPgQ=
+github.com/blocktop/go-glog-cobra v0.0.0-20181004141147-1a2e8060f5d2/go.mod h1:ZqRIKH3YGKtM09jQLuNc5f2ieVk1O8GXXfdzHUeH96Q=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/golang/glog v1.1.1 h1:jxpi2eWoU84wbX9iIEyAeeoac3FLuifZpY9tcNUD9kw=
 github.com/golang/glog v1.1.1/go.mod h1:zR+okUeTbrL6EL3xHUDxZuEtGv04p5shwip1+mL/rLQ=

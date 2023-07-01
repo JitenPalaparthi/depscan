@@ -11,12 +11,12 @@ import (
 )
 
 type Pip struct {
-	FilePath string
+	FilePaths []string
 }
 
 func (p *Pip) Scan() ([]scan.Dep, error) {
 	gdeps := make([]scan.Dep, 0)
-	inFile, err := os.Open(p.FilePath)
+	inFile, err := os.Open(p.FilePaths[0])
 	if err != nil {
 		log.Println(err)
 		return nil, nil
@@ -25,7 +25,6 @@ func (p *Pip) Scan() ([]scan.Dep, error) {
 
 	scanner := bufio.NewScanner(inFile)
 	for scanner.Scan() {
-
 		line := scanner.Text()
 		line = strings.TrimSpace(line)
 		if line[0] == '#' {
@@ -38,7 +37,15 @@ func (p *Pip) Scan() ([]scan.Dep, error) {
 			gdep.Type = "pip"
 			gdep.Name = strs[0]
 			gdep.Version = strs[1]
-			gdep.Source = p.FilePath
+			gdep.Source = p.FilePaths[0]
+			gdeps = append(gdeps, gdep)
+		} else if !strings.Contains(line, "==") { // There are entries without == as well.i.e no version information
+			gdep := scan.Dep{}
+			gdep.Direct = true
+			gdep.Type = "pip"
+			gdep.Name = strings.TrimSpace(line)
+			gdep.Version = ""
+			gdep.Source = p.FilePaths[0]
 			gdeps = append(gdeps, gdep)
 		}
 		// the actual logic goes here

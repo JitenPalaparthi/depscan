@@ -9,7 +9,7 @@ import (
 
 func TestPip(t *testing.T) {
 	pip := new(implement.Pip)
-	pip.FilePath = "requirements.txt"
+	pip.FilePaths = append(pip.FilePaths, "requirements.txt")
 	gdeps, err := pip.Scan()
 	fmt.Println(gdeps, err)
 	if err != nil {
@@ -22,7 +22,7 @@ func TestPip(t *testing.T) {
 
 func TestGradle(t *testing.T) {
 	gradle := new(implement.Gradle)
-	gradle.FilePath = "build.gradle"
+	gradle.FilePaths = append(gradle.FilePaths, "build.gradle")
 	gdeps, err := gradle.Scan()
 	fmt.Println(gdeps, err)
 	if err != nil {

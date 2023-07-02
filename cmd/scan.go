@@ -39,6 +39,7 @@ var scanCmd = &cobra.Command{
 		cnfg, err := config.New()
 		if err != nil {
 			glog.Errorln(err)
+			return
 		}
 
 		glog.Infoln("config object:", cnfg)
@@ -46,12 +47,14 @@ var scanCmd = &cobra.Command{
 		impl, err := implement.New(cnfg, path, fmt.Sprint(strings.TrimSuffix(outFile, filepath.Ext(outFile)), ".", format), depth) // create an instance of implement
 		if err != nil {
 			glog.Errorln(err)
+			return
 		}
 		glog.Infoln("implement object:", impl)
 
 		err = impl.Feed() // feed required data for the implement object3
 		if err != nil {
 			glog.Errorln(err)
+			return
 		}
 		glog.Infoln("implement object after feed:", impl)
 
@@ -112,10 +115,12 @@ var scanCmd = &cobra.Command{
 		deps, err := impl.ScanAll(iscanners...)
 		if err != nil {
 			glog.Errorln(err)
+			return
 		}
 		err = impl.Write(deps)
 		if err != nil {
 			glog.Errorln(err)
+			return
 		}
 		glog.Info("Directory count:", impl.DirCount, "\nFile Count:", impl.FileCount)
 	},

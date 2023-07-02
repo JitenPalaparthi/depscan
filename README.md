@@ -9,14 +9,16 @@
 
 ## How to install
 
-- The below command works only if go is installed on the machine and GOBIN environment variable is configured. If GOBIN path is set then just call in the terminal
-```
-depscan
-```
+- The below command works only if go is installed on the machine and GOBIN environment variable is configured. If GOBIN path is set then just call in the terminal. After go install command run depscan.
 
 ```
 go install github.com/JitenPalaparthi/depscan
 ```
+```
+depscan
+```
+
+
 
 ## Build from the source code
 

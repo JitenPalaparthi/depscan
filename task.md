@@ -1,3 +1,0 @@
-- give a path where repository exists
-- check which programing language is used in that repository
-- 

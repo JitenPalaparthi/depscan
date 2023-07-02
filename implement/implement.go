@@ -34,6 +34,7 @@ var (
 	ErrInvalidOutfileFormat    = errors.New("invalid outfile format.It must be json | yaml | yml")
 	ErrNewImplement            = errors.New("use New function to create Implement object")
 	ErrNoDataToGenerateOutfile = errors.New("no data to generate output file")
+	ErrPathDoesNotExist        = errors.New("path does not exist")
 )
 
 // New is a function that is used to create/instantiate implement object
@@ -43,6 +44,10 @@ func New(config *config.Config, path string, outfile string, depth uint8) (*Impl
 	}
 	if path == "" {
 		return nil, ErrEmptyPath
+	}
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		// path/to/whatever does not exist
+		return nil, ErrPathDoesNotExist
 	}
 	// if depth < 0 {
 	// 	return nil, errors.New("invalid depth")

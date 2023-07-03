@@ -5,7 +5,7 @@
 - maven Java    - pom.xml
 - gradle Java   - build.gradle
 - pip Python    - requirements or requirements.txt
-- npm Node      - package-lock.json [Work in Progress]
+- npm Node      - package-lock.json [it supports lockfileVersion 1 and 2]
 
 ## How to install
 

@@ -12,13 +12,18 @@
 - The below command works only if go is installed on the machine and GOBIN environment variable is configured. If GOBIN path is set then just call in the terminal. After go install command run depscan.
 
 ```
-go install github.com/JitenPalaparthi/depscan
+go install github.com/JitenPalaparthi/depscan@latest
 ```
 ```
 depscan
 ```
+- Download and install from source
 
-
+```
+git clone https://github.com/JitenPalaparthi/depscan.git
+cd <depscan directory>
+go install .
+```
 
 ## Build from the source code
 

@@ -35,7 +35,7 @@ var (
 	ErrNewImplement            = errors.New("use New function to create Implement object")
 	ErrNoDataToGenerateOutfile = errors.New("no data to generate output file")
 	ErrPathDoesNotExist        = errors.New("path does not exist")
-	ErrUnsupportedNPMVersion   = errors.New("unsupported npm version.Currently it supports only lockfileVersion-1 and lockfileVersion-2")
+	ErrUnsupportedNPMVersion   = errors.New("unsupported npm version.Currently it supports only lockfileVersion-1,2 and 3 only.Old formats are not supported")
 )
 
 // New is a function that is used to create/instantiate implement object
@@ -91,7 +91,17 @@ func (i *Implement) Feed() error {
 		if !d.IsDir() {
 			if helper.IsElementExist(i.Config.GetDepFiles(), d.Name()) {
 				i.Paths = append(i.Paths, p)
+				Dep := i.Config.GetDepManagerByFileName(d.Name()) // added to add language even if no js or other programming files. Just based on the Dep file. For example requirements.txt
+				i.Languages = append(i.Languages, Dep.Lang)       //
 			}
+
+			// The below code does these things.
+			// 1- Get programming file extensions. Example .java,.py .js etc
+			// Check whether that extension exists in the config file.
+			// if the ext exists add it to the implement object exts.
+			// based on ext add languages to the implemen object.
+			// This logic makes sure that it does not append multiple entries of same extension and also multiple entries of langauges.
+			// so duplicates of implement.Exts and implement.Langauges
 			if helper.IsElementExist(i.Config.GetExtensions(), filepath.Ext(d.Name())) {
 				if !helper.IsElementExist(i.Exts, filepath.Ext(d.Name())) {
 					i.Exts = append(i.Exts, filepath.Ext(d.Name()))
@@ -105,6 +115,7 @@ func (i *Implement) Feed() error {
 	return nil
 }
 
+// ScanAll scans all language implementations based on Scanner interface
 func (i *Implement) ScanAll(iScanners ...scanner.Scanner) ([]scanner.Dep, error) {
 	var deps []scanner.Dep
 	for _, s := range iScanners {
@@ -117,6 +128,7 @@ func (i *Implement) ScanAll(iScanners ...scanner.Scanner) ([]scanner.Dep, error)
 	return deps, nil
 }
 
+// Write dependency data to the file.
 func (i *Implement) Write(deps []scanner.Dep) error {
 	if len(deps) == 0 {
 		return ErrNoDataToGenerateOutfile

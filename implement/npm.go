@@ -74,13 +74,12 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 		}
 		//fmt.Println(gdeps)
 		//todo logic for version 1
-	} else if mp["lockfileVersion"].(float64) == 2 {
-		glog.Infoln("This is lockfileVersion:2")
+	} else if mp["lockfileVersion"].(float64) == 2 || mp["lockfileVersion"].(float64) == 3 {
+		glog.Infoln("This is lockfileVersion:", mp["lockfileVersion"].(float64))
 		data := mp["packages"]
 		//fmt.Println(reflect.TypeOf(data))
 		switch data := data.(type) {
 		case map[string]any:
-
 			for k1, v1 := range data {
 				if k1 == "devDependencies" || k1 == "" {
 					continue
@@ -91,7 +90,7 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 				gdep.Direct = true
 				gdep.Type = "npm"
 				gdep.Source = n.FilePaths[0]
-				isDev := false
+				//isDev := false
 
 				for k2, v2 := range v1.(map[string]any) {
 					if k2 == "version" {
@@ -100,13 +99,13 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 					// if k2 == "revision" {
 
 					// }
-					if k2 == "dev" {
-						isDev = true
-					}
+					// if k2 == "dev" {
+					// 	isDev = true
+					// }
 				}
-				if !isDev {
-					gdeps = append(gdeps, gdep)
-				}
+				//if !isDev {
+				gdeps = append(gdeps, gdep)
+				//}
 
 			}
 		}

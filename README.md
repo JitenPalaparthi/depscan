@@ -45,7 +45,8 @@ Available Commands:
   completion  Generate the autocompletion script for the specified shell
   help        Help about any command
   scan        scan scans a given repository
-  version     depscan v0.0.1
+  version     depscan v0.0.3
+  which       currently it supports Java,Python,JavaScript
 
 Flags:
       --alsologtostderr           Logs are written to standard error as well as to files.

@@ -12,9 +12,9 @@ func init() {
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "depscan v0.0.1",
-	Long:  `depscan v0.0.1`,
+	Short: "depscan v0.0.3",
+	Long:  `depscan v0.0.3`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("depscan  v0.0.2")
+		fmt.Println("depscan  v0.0.3")
 	},
 }

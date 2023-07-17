@@ -30,7 +30,10 @@ type NpmVersion1DataFormat struct {
 
 func (n *Npm) Scan() ([]scan.Dep, error) {
 	gdeps := make([]scan.Dep, 0)
-
+	// enable to debug and disable after that
+	fmt.Println("<<<<------------------")
+	fmt.Println(n.FilePaths)
+	fmt.Println("<<<<------------------")
 	bytes, err := ioutil.ReadFile(n.FilePaths[0])
 	if err != nil {
 		return nil, err

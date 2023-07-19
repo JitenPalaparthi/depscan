@@ -17,7 +17,7 @@
     {
       "lang": "JavaScript",
       "depTool": "npm",
-      "fileNames": ["package-lock.json"],
+      "fileNames": ["package-lock.json","package.json"],
       "fileExt": ".js"
     },
     {

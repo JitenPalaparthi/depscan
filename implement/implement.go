@@ -2,7 +2,6 @@ package implement
 
 import (
 	"encoding/json"
-	"errors"
 	"io/fs"
 	"io/ioutil"
 	"os"
@@ -21,24 +20,15 @@ type Implement struct {
 	Path                string
 	Outfile             string
 	Paths               []string
+	PathSets            map[string][]string
 	Exts                []string
 	Languages           []string
 	Depth               uint8
 	DirCount, FileCount int
 }
 
-var (
-	ErrNilConfig               = errors.New("nil config")
-	ErrEmptyPath               = errors.New("empty path")
-	ErrInvalidOutfile          = errors.New("invalid outfile")
-	ErrInvalidOutfileFormat    = errors.New("invalid outfile format.It must be json | yaml | yml")
-	ErrNewImplement            = errors.New("use New function to create Implement object")
-	ErrNoDataToGenerateOutfile = errors.New("no data to generate output file")
-	ErrPathDoesNotExist        = errors.New("path does not exist")
-	ErrUnsupportedNPMVersion   = errors.New("unsupported npm version.Currently it supports only lockfileVersion-1,2 and 3 only.Old formats are not supported")
-)
-
 // New is a function that is used to create/instantiate implement object
+// step-1
 func New(config *config.Config, path string, outfile string, depth uint8) (*Implement, error) {
 	if config == nil {
 		return nil, ErrNilConfig
@@ -65,9 +55,12 @@ func New(config *config.Config, path string, outfile string, depth uint8) (*Impl
 	implement.Path = path
 	implement.Depth = depth
 	implement.Outfile = outfile
+	implement.PathSets = make(map[string][]string)
 	return implement, nil
 }
 
+// Feed is to feed data to the Implement object
+// step-2
 func (i *Implement) Feed() error {
 	if i.Config == nil || i.Path == "" {
 		return ErrNewImplement
@@ -91,6 +84,12 @@ func (i *Implement) Feed() error {
 		if !d.IsDir() {
 			if helper.IsElementExist(i.Config.GetDepFiles(), d.Name()) {
 				i.Paths = append(i.Paths, p)
+
+				//_, ok := i.PathSets[filepath.Dir(p)]
+				//if !ok {
+				i.PathSets[filepath.Dir(p)] = append(i.PathSets[filepath.Dir(p)], p)
+				//}
+
 				Dep := i.Config.GetDepManagerByFileName(d.Name()) // added to add language even if no js or other programming files. Just based on the Dep file. For example requirements.txt
 				i.Languages = append(i.Languages, Dep.Lang)       //
 			}
@@ -116,6 +115,7 @@ func (i *Implement) Feed() error {
 }
 
 // ScanAll scans all language implementations based on Scanner interface
+// step-3
 func (i *Implement) ScanAll(iScanners ...scanner.Scanner) ([]scanner.Dep, error) {
 	var deps []scanner.Dep
 	for _, s := range iScanners {

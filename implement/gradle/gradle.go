@@ -1,4 +1,4 @@
-package implement
+package gradle
 
 import (
 	"bufio"

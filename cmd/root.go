@@ -30,7 +30,7 @@ var rootCmd = &cobra.Command{
 	Long:  `A dependency scanner that scans repositories that are developed using different programming languages.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do Stuff Here
-		fmt.Println("A dependency scanner that scans repositories that are developed using different programming languages.\nCurrently it supports Java(maven | gradle), Python(pip)\ndepscan  v0.0.2")
+		fmt.Println("A dependency scanner that scans repositories that are developed using different programming languages.\nCurrently it supports Java(maven | gradle), Python(pip)\ndepscan  v0.0.5")
 	},
 }
 

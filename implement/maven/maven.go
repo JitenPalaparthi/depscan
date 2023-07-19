@@ -1,4 +1,4 @@
-package implement
+package maven
 
 import (
 	"bufio"

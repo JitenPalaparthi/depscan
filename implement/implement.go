@@ -37,6 +37,8 @@ var (
 	ErrNoDataToGenerateOutfile = errors.New("no data to generate output file")
 	ErrPathDoesNotExist        = errors.New("path does not exist")
 	ErrUnsupportedNPMVersion   = errors.New("unsupported npm version.Currently it supports only lockfileVersion-1,2 and 3 only.Old formats are not supported")
+	ErrUnsupportedFile         = errors.New("unsupported file")
+	ErrNoPackageFileFound      = errors.New("no package dependency file found")
 )
 
 // New is a function that is used to create/instantiate implement object

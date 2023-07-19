@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"reflect"
+	"strings"
 
 	"github.com/JitenPalaparthi/depscan/helper"
 	"github.com/JitenPalaparthi/depscan/implement"
@@ -62,7 +63,8 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						gdep := scan.Dep{}
 						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
 						gdep.Name = k1
-						_, ok := depMap[k1]
+						k1s := strings.Split(k1, "/") //
+						_, ok := depMap[k1s[len(k1s)-1]]
 						if ok {
 							gdep.Direct = true
 						} else {
@@ -101,7 +103,8 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						gdep := scan.Dep{}
 						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
 						gdep.Name = k1
-						_, ok := depMap[k1]
+						k1s := strings.Split(k1, "/") //
+						_, ok := depMap[k1s[len(k1s)-1]]
 						if ok {
 							gdep.Direct = true
 						} else {
@@ -140,13 +143,7 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						gdep := scan.Dep{}
 						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
 						gdep.Name = k1
-						_, ok := depMap[k1]
-						if ok {
-							gdep.Direct = true
-						} else {
-							gdep.Direct = false
-						}
-
+						gdep.Direct = true
 						gdep.Type = "npm"
 						gdep.Source = packagelockFile
 						isDev := false
@@ -179,12 +176,7 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						gdep := scan.Dep{}
 						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
 						gdep.Name = k1
-						_, ok := depMap[k1]
-						if ok {
-							gdep.Direct = true
-						} else {
-							gdep.Direct = false
-						}
+						gdep.Direct = true
 						gdep.Type = "npm"
 						gdep.Source = packagelockFile
 						//isDev := false

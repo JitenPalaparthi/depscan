@@ -9,6 +9,10 @@ import (
 
 	"github.com/JitenPalaparthi/depscan/config"
 	"github.com/JitenPalaparthi/depscan/implement"
+	gradlep "github.com/JitenPalaparthi/depscan/implement/gradle"
+	mavenp "github.com/JitenPalaparthi/depscan/implement/maven"
+	npmp "github.com/JitenPalaparthi/depscan/implement/npm"
+	pipp "github.com/JitenPalaparthi/depscan/implement/pip"
 	scnr "github.com/JitenPalaparthi/depscan/scanner"
 	"github.com/golang/glog"
 	"github.com/spf13/cobra"
@@ -65,10 +69,10 @@ var scanCmd = &cobra.Command{
 
 		iscanners := make([]scnr.Scanner, 0)
 		var (
-			pip    *implement.Pip
-			npm    *implement.Npm
-			gradle *implement.Gradle
-			maven  *implement.Maven
+			pip    *pipp.Pip
+			npm    *npmp.Npm
+			gradle *gradlep.Gradle
+			maven  *mavenp.Maven
 		)
 		for _, value := range impl.PathSets {
 			depManager := cnfg.GetDepManagerByFileName(filepath.Base(value[0]))
@@ -80,25 +84,25 @@ var scanCmd = &cobra.Command{
 			if depManager != nil {
 				switch depManager.DepTool {
 				case "pip":
-					pip = new(implement.Pip)
+					pip = new(pipp.Pip)
 					pip.FilePaths = append(pip.FilePaths, value...)
 					iscanners = append(iscanners, pip)
 					glog.Infoln("Found pip as dependency manager.The Filepath is ", value[0])
 
 				case "npm":
-					npm = new(implement.Npm)
+					npm = new(npmp.Npm)
 					npm.FilePaths = append(npm.FilePaths, value...)
 					iscanners = append(iscanners, npm)
 					glog.Infoln("Found npm as dependency manager.The Filepath is ", value[0])
 
 				case "gradle":
-					gradle = new(implement.Gradle)
+					gradle = new(gradlep.Gradle)
 					gradle.FilePaths = append(gradle.FilePaths, value...)
 					iscanners = append(iscanners, gradle)
 					glog.Infoln("Found gradle as dependency manager.The Filepath is ", value[0])
 
 				case "maven":
-					maven = new(implement.Maven)
+					maven = new(mavenp.Maven)
 					maven.FilePaths = append(maven.FilePaths, value...)
 					iscanners = append(iscanners, maven)
 					glog.Infoln("Found maven as dependency manager.The Filepath is ", value[0])

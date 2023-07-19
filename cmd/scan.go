@@ -9,10 +9,6 @@ import (
 
 	"github.com/JitenPalaparthi/depscan/config"
 	"github.com/JitenPalaparthi/depscan/implement"
-	gradlep "github.com/JitenPalaparthi/depscan/implement/gradle"
-	mavenp "github.com/JitenPalaparthi/depscan/implement/maven"
-	npmp "github.com/JitenPalaparthi/depscan/implement/npm"
-	pipp "github.com/JitenPalaparthi/depscan/implement/pip"
 	scnr "github.com/JitenPalaparthi/depscan/scanner"
 	"github.com/golang/glog"
 	"github.com/spf13/cobra"
@@ -60,22 +56,17 @@ var scanCmd = &cobra.Command{
 			glog.Errorln(err)
 			return
 		}
-
-		// fmt.Println("<><>><><><><><<><><")
-		// fmt.Println(impl.PathSets)
-		// fmt.Println("<><><><><>>><><><<<>")
-
 		glog.Infoln("implement object after feed:", impl)
 
 		iscanners := make([]scnr.Scanner, 0)
 		var (
-			pip    *pipp.Pip
-			npm    *npmp.Npm
-			gradle *gradlep.Gradle
-			maven  *mavenp.Maven
+			pip    *implement.Pip
+			npm    *implement.Npm
+			gradle *implement.Gradle
+			maven  *implement.Maven
 		)
-		for _, value := range impl.PathSets {
-			depManager := cnfg.GetDepManagerByFileName(filepath.Base(value[0]))
+		for _, v := range impl.Paths {
+			depManager := cnfg.GetDepManagerByFileName(filepath.Base(v))
 			// The problem is .java files are inside many directories.So the tool might have not found
 			//.java file. Unless it finds a file with .java or .py or .js extention it cannot blindly go and
 			// do the process.Due to .java file directory depth , it is unable to find for gradle and maven.
@@ -84,80 +75,42 @@ var scanCmd = &cobra.Command{
 			if depManager != nil {
 				switch depManager.DepTool {
 				case "pip":
-					pip = new(pipp.Pip)
-					pip.FilePaths = append(pip.FilePaths, value...)
+					if pip == nil {
+						pip = new(implement.Pip)
+					}
+					pip.FilePaths = append(pip.FilePaths, v)
 					iscanners = append(iscanners, pip)
-					glog.Infoln("Found pip as dependency manager.The Filepath is ", value[0])
+					glog.Infoln("Found pip as dependency manager.The Filepath is ", v)
 
 				case "npm":
-					npm = new(npmp.Npm)
-					npm.FilePaths = append(npm.FilePaths, value...)
+					if npm == nil {
+						npm = new(implement.Npm)
+					}
+					npm.FilePaths = append(npm.FilePaths, v)
 					iscanners = append(iscanners, npm)
-					glog.Infoln("Found npm as dependency manager.The Filepath is ", value[0])
+					glog.Infoln("Found npm as dependency manager.The Filepath is ", v)
 
 				case "gradle":
-					gradle = new(gradlep.Gradle)
-					gradle.FilePaths = append(gradle.FilePaths, value...)
+					if gradle == nil {
+						gradle = new(implement.Gradle)
+					}
+					gradle.FilePaths = append(gradle.FilePaths, v)
 					iscanners = append(iscanners, gradle)
-					glog.Infoln("Found gradle as dependency manager.The Filepath is ", value[0])
+					glog.Infoln("Found gradle as dependency manager.The Filepath is ", v)
 
 				case "maven":
-					maven = new(mavenp.Maven)
-					maven.FilePaths = append(maven.FilePaths, value...)
+					if maven == nil {
+						maven = new(implement.Maven)
+					}
+					maven.FilePaths = append(maven.FilePaths, v)
 					iscanners = append(iscanners, maven)
-					glog.Infoln("Found maven as dependency manager.The Filepath is ", value[0])
+					glog.Infoln("Found maven as dependency manager.The Filepath is ", v)
 
 				default:
 					glog.Infoln("Unimplemented tool")
 				}
 			}
 		}
-		// for _, v := range impl.Paths {
-		// 	depManager := cnfg.GetDepManagerByFileName(filepath.Base(v))
-		// 	// The problem is .java files are inside many directories.So the tool might have not found
-		// 	//.java file. Unless it finds a file with .java or .py or .js extention it cannot blindly go and
-		// 	// do the process.Due to .java file directory depth , it is unable to find for gradle and maven.
-		// 	// Hence the below logic is commented.
-		// 	//if depManager != nil && helper.IsElementExist(impl.Exts, depManager.FileExt) {
-		// 	if depManager != nil {
-		// 		switch depManager.DepTool {
-		// 		case "pip":
-		// 			if pip == nil {
-		// 				pip = new(implement.Pip)
-		// 			}
-		// 			pip.FilePaths = append(pip.FilePaths, v)
-		// 			iscanners = append(iscanners, pip)
-		// 			glog.Infoln("Found pip as dependency manager.The Filepath is ", v)
-
-		// 		case "npm":
-		// 			if npm == nil {
-		// 				npm = new(implement.Npm)
-		// 			}
-		// 			npm.FilePaths = append(npm.FilePaths, v)
-		// 			iscanners = append(iscanners, npm)
-		// 			glog.Infoln("Found npm as dependency manager.The Filepath is ", v)
-
-		// 		case "gradle":
-		// 			if gradle == nil {
-		// 				gradle = new(implement.Gradle)
-		// 			}
-		// 			gradle.FilePaths = append(gradle.FilePaths, v)
-		// 			iscanners = append(iscanners, gradle)
-		// 			glog.Infoln("Found gradle as dependency manager.The Filepath is ", v)
-
-		// 		case "maven":
-		// 			if maven == nil {
-		// 				maven = new(implement.Maven)
-		// 			}
-		// 			maven.FilePaths = append(maven.FilePaths, v)
-		// 			iscanners = append(iscanners, maven)
-		// 			glog.Infoln("Found maven as dependency manager.The Filepath is ", v)
-
-		// 		default:
-		// 			glog.Infoln("Unimplemented tool")
-		// 		}
-		// 	}
-		// }
 		glog.Infoln("There are/is ", len(iscanners), "of scanners to scan")
 		deps, err := impl.ScanAll(iscanners...)
 		if err != nil {

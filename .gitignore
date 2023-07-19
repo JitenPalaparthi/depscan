@@ -19,3 +19,13 @@
 
 # Go workspace file
 go.work
+
+test_repos/*
+
+output.json
+
+checkmain.gogo
+
+checkmain.go
+
+implement/npm.old

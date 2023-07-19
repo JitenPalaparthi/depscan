@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/JitenPalaparthi/depscan/implement"
+	gradlep "github.com/JitenPalaparthi/depscan/implement/gradle"
+	pipp "github.com/JitenPalaparthi/depscan/implement/pip"
 )
 
 func TestPip(t *testing.T) {
-	pip := new(implement.Pip)
+	pip := new(pipp.Pip)
 	pip.FilePaths = append(pip.FilePaths, "requirements.txt")
 	gdeps, err := pip.Scan()
 	fmt.Println(gdeps, err)
@@ -21,7 +22,7 @@ func TestPip(t *testing.T) {
 }
 
 func TestGradle(t *testing.T) {
-	gradle := new(implement.Gradle)
+	gradle := new(gradlep.Gradle)
 	gradle.FilePaths = append(gradle.FilePaths, "build.gradle")
 	gdeps, err := gradle.Scan()
 	fmt.Println(gdeps, err)

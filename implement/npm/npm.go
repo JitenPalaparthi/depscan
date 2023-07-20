@@ -61,11 +61,30 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 				case map[string]any:
 					for k1, v1 := range data {
 						gdep := scan.Dep{}
-						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
-						gdep.Name = k1
-						k1s := strings.Split(k1, "/") //
-						_, ok := depMap[k1s[len(k1s)-1]]
+
+						// to fetch dependencies
+						dependencies, ok := v1.(map[string]any)["dependencies"]
 						if ok {
+							glog.Infoln("<<<<-------Sub-Dependencies--------->>>>")
+							glog.Infoln(dependencies)
+							gdep.Dependencies = dependencies.(map[string]any)
+						}
+
+						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
+						//if strings.Contains(k1, "node_modules/") {
+						k1 = strings.Replace(k1, "node_modules/", "", 1)
+						//}
+
+						gdep.Name = k1
+						//k1s := strings.Split(k1, "/") //
+						yes := false
+						for key := range depMap {
+							if strings.HasSuffix(k1, key) {
+								yes = true
+								break
+							}
+						}
+						if yes {
 							gdep.Direct = true
 						} else {
 							gdep.Direct = false
@@ -101,11 +120,24 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 							continue
 						}
 						gdep := scan.Dep{}
-						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
-						gdep.Name = k1
-						k1s := strings.Split(k1, "/") //
-						_, ok := depMap[k1s[len(k1s)-1]]
+						dependencies, ok := v1.(map[string]any)["dependencies"]
 						if ok {
+							glog.Infoln("<<<<-------Sub-Dependencies--------->>>>")
+							glog.Infoln(dependencies)
+							gdep.Dependencies = dependencies.(map[string]any)
+
+						}
+						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
+						k1 = strings.Replace(k1, "node_modules/", "", 1)
+						gdep.Name = k1
+						yes := false
+						for key := range depMap {
+							if strings.HasSuffix(k1, key) {
+								yes = true
+								break
+							}
+						}
+						if yes {
 							gdep.Direct = true
 						} else {
 							gdep.Direct = false
@@ -142,8 +174,33 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 					for k1, v1 := range data {
 						gdep := scan.Dep{}
 						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
+						dependencies, ok := v1.(map[string]any)["dependencies"]
+						if ok {
+							glog.Infoln("<<<<-------Sub-Dependencies--------->>>>")
+							glog.Infoln(dependencies)
+							gdep.Dependencies = dependencies.(map[string]any)
+
+						}
+
+						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
+						//if strings.Contains(k1, "node_modules/") {
+						k1 = strings.Replace(k1, "node_modules/", "", 1)
+						//}
+
 						gdep.Name = k1
-						gdep.Direct = true
+						//k1s := strings.Split(k1, "/") //
+						yes := false
+						for key := range depMap {
+							if strings.HasSuffix(k1, key) {
+								yes = true
+								break
+							}
+						}
+						if yes {
+							gdep.Direct = true
+						} else {
+							gdep.Direct = false
+						}
 						gdep.Type = "npm"
 						gdep.Source = packagelockFile
 						isDev := false
@@ -175,8 +232,32 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						}
 						gdep := scan.Dep{}
 						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
+						dependencies, ok := v1.(map[string]any)["dependencies"]
+						if ok {
+							glog.Infoln("<<<<-------Sub-Dependencies--------->>>>")
+							glog.Infoln(dependencies)
+							gdep.Dependencies = dependencies.(map[string]any)
+						}
+
+						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
+						//if strings.Contains(k1, "node_modules/") {
+						k1 = strings.Replace(k1, "node_modules/", "", 1)
+						//}
+
 						gdep.Name = k1
-						gdep.Direct = true
+						//k1s := strings.Split(k1, "/") //
+						yes := false
+						for key := range depMap {
+							if strings.HasSuffix(k1, key) {
+								yes = true
+								break
+							}
+						}
+						if yes {
+							gdep.Direct = true
+						} else {
+							gdep.Direct = false
+						}
 						gdep.Type = "npm"
 						gdep.Source = packagelockFile
 						//isDev := false

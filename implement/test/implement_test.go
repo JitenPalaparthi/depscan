@@ -23,7 +23,7 @@ func TestPip(t *testing.T) {
 
 func TestGradle(t *testing.T) {
 	gradle := new(gradlep.Gradle)
-	gradle.FilePaths = append(gradle.FilePaths, "build.gradle")
+	gradle.FilePaths = append(gradle.FilePaths, "dependencies.lock")
 	gdeps, err := gradle.Scan()
 	fmt.Println(gdeps, err)
 	if err != nil {

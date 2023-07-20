@@ -25,7 +25,7 @@ type NpmVersion1DataFormat struct {
 func (n *Npm) Scan() ([]scan.Dep, error) {
 	gdeps := make([]scan.Dep, 0)
 	depMap := make(map[string]any)
-	duplicateDep := make(map[string]any)
+	duplicateDep := make(map[string][]string)
 	// a path can have maximum two files w.r.t npm.
 	// 1- package-lock.json
 	// 2- package.json
@@ -106,13 +106,18 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						v, ok := duplicateDep[k1]
 						if !ok {
 							isDuplicate = false
+							duplicateDep[k1] = append(duplicateDep[k1], gdep.Version)
 						} else {
-							if v.(string) != gdep.Version {
+							//if v.(string) != gdep.Version {
+							if !helper.IsElementExist(v, gdep.Version) {
 								isDuplicate = false
+								duplicateDep[k1] = append(duplicateDep[k1], gdep.Version)
 							}
 						}
-						if !isDev && !isDuplicate {
-							gdeps = append(gdeps, gdep)
+						if !isDev {
+							if !isDuplicate {
+								gdeps = append(gdeps, gdep)
+							}
 						}
 					}
 
@@ -170,9 +175,12 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						v, ok := duplicateDep[k1]
 						if !ok {
 							isDuplicate = false
+							duplicateDep[k1] = append(duplicateDep[k1], gdep.Version)
 						} else {
-							if v.(string) != gdep.Version {
+							//if v.(string) != gdep.Version {
+							if !helper.IsElementExist(v, gdep.Version) {
 								isDuplicate = false
+								duplicateDep[k1] = append(duplicateDep[k1], gdep.Version)
 							}
 						}
 						if !isDuplicate {
@@ -245,13 +253,18 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						v, ok := duplicateDep[k1]
 						if !ok {
 							isDuplicate = false
+							duplicateDep[k1] = append(duplicateDep[k1], gdep.Version)
 						} else {
-							if v.(string) != gdep.Version {
+							//if v.(string) != gdep.Version {
+							if !helper.IsElementExist(v, gdep.Version) {
 								isDuplicate = false
+								duplicateDep[k1] = append(duplicateDep[k1], gdep.Version)
 							}
 						}
-						if !isDev && !isDuplicate {
-							gdeps = append(gdeps, gdep)
+						if !isDev {
+							if !isDuplicate {
+								gdeps = append(gdeps, gdep)
+							}
 						}
 					}
 
@@ -309,9 +322,12 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						v, ok := duplicateDep[k1]
 						if !ok {
 							isDuplicate = false
+							duplicateDep[k1] = append(duplicateDep[k1], gdep.Version)
 						} else {
-							if v.(string) != gdep.Version {
+							//if v.(string) != gdep.Version {
+							if !helper.IsElementExist(v, gdep.Version) {
 								isDuplicate = false
+								duplicateDep[k1] = append(duplicateDep[k1], gdep.Version)
 							}
 						}
 						if !isDuplicate {

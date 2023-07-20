@@ -16,10 +16,10 @@ import (
 )
 
 type Implement struct {
-	Config              *config.Config
-	Path                string
-	Outfile             string
-	Paths               []string
+	Config  *config.Config
+	Path    string
+	Outfile string
+	//Paths               []string
 	PathSets            map[string][]string
 	Exts                []string
 	Languages           []string
@@ -83,13 +83,7 @@ func (i *Implement) Feed() error {
 		}
 		if !d.IsDir() {
 			if helper.IsElementExist(i.Config.GetDepFiles(), d.Name()) {
-				i.Paths = append(i.Paths, p)
-
-				//_, ok := i.PathSets[filepath.Dir(p)]
-				//if !ok {
 				i.PathSets[filepath.Dir(p)] = append(i.PathSets[filepath.Dir(p)], p)
-				//}
-
 				Dep := i.Config.GetDepManagerByFileName(d.Name()) // added to add language even if no js or other programming files. Just based on the Dep file. For example requirements.txt
 				i.Languages = append(i.Languages, Dep.Lang)       //
 			}

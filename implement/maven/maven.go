@@ -3,11 +3,11 @@ package maven
 import (
 	"bufio"
 	"encoding/xml"
-	"fmt"
 	"os"
 	"strings"
 
 	scan "github.com/JitenPalaparthi/depscan/scanner"
+	"github.com/golang/glog"
 )
 
 type Maven struct {
@@ -31,6 +31,7 @@ func (m *Maven) Scan() ([]scan.Dep, error) {
 
 	inFile, err := os.Open(m.FilePaths[0])
 	if err != nil {
+		glog.Infoln(err)
 		return nil, err
 	}
 	defer inFile.Close()
@@ -50,7 +51,7 @@ func (m *Maven) Scan() ([]scan.Dep, error) {
 			str = str + "</dependencies>"
 		}
 		if strings.Contains(line, "<dependencies>") {
-			fmt.Println(line)
+			glog.Infoln(line)
 			found = true
 		}
 		if found {
@@ -60,6 +61,7 @@ func (m *Maven) Scan() ([]scan.Dep, error) {
 
 	err = xml.Unmarshal([]byte(str), result)
 	if err != nil {
+		glog.Infoln(err)
 		return nil, err
 	}
 	for _, dependency := range result.Dependencies {

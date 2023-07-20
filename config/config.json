@@ -11,7 +11,7 @@
     {
       "lang": "Java",
       "depTool": "gradle",
-      "fileNames": ["build.gradle"],
+      "fileNames": ["dependencies.lock"],
       "fileExt": ".java"
     },
     {
@@ -38,6 +38,13 @@
       "fileNames": ["poetry.lock"],
        "fileExt":".py"
     },
+    {
+      "lang": "Php",
+      "depTool": "composer",
+      "fileNames": ["composer.json"],
+      "fileExt":".php"
+    }
+    ,
     {
       "lang": "Go",
       "depTool": "mod",

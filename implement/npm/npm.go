@@ -25,7 +25,7 @@ type NpmVersion1DataFormat struct {
 func (n *Npm) Scan() ([]scan.Dep, error) {
 	gdeps := make([]scan.Dep, 0)
 	depMap := make(map[string]any)
-
+	duplicateDep := make(map[string]any)
 	// a path can have maximum two files w.r.t npm.
 	// 1- package-lock.json
 	// 2- package.json
@@ -70,31 +70,12 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 							gdep.Dependencies = dependencies.(map[string]any)
 						}
 
-						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
-						//if strings.Contains(k1, "node_modules/") {
-						//k1 = strings.Replace(k1, "node_modules/", "", 1)
 						li := strings.LastIndex(k1, "node_modules/")
 						if li != -1 {
 							li = li + len("node_modules/")
 							k1 = k1[li:]
 						}
-						//}
-
 						gdep.Name = k1
-						//k1s := strings.Split(k1, "/") //
-						yes := false
-						for key := range depMap {
-							if strings.HasSuffix(k1, key) {
-								yes = true
-								break
-							}
-						}
-						if yes {
-							gdep.Direct = true
-						} else {
-							gdep.Direct = false
-						}
-
 						gdep.Type = "npm"
 						gdep.Source = packagelockFile
 						isDev := false
@@ -106,7 +87,31 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 								isDev = true
 							}
 						}
-						if !isDev {
+
+						yes := false
+						for key, value := range depMap {
+							v2 := strings.Replace(value.(string), "^", "", 1)
+							if k1 == key && v2 == gdep.Version {
+								yes = true
+								break
+							}
+						}
+						if yes {
+							gdep.Direct = true
+						} else {
+							gdep.Direct = false
+						}
+
+						isDuplicate := true
+						v, ok := duplicateDep[k1]
+						if !ok {
+							isDuplicate = false
+						} else {
+							if v.(string) != gdep.Version {
+								isDuplicate = false
+							}
+						}
+						if !isDev && !isDuplicate {
 							gdeps = append(gdeps, gdep)
 						}
 					}
@@ -132,17 +137,25 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 							gdep.Dependencies = dependencies.(map[string]any)
 
 						}
-						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
-						//k1 = strings.Replace(k1, "node_modules/", "", 1)
 						li := strings.LastIndex(k1, "node_modules/")
 						if li != -1 {
 							li = li + len("node_modules/")
 							k1 = k1[li:]
 						}
 						gdep.Name = k1
+
+						gdep.Type = "npm"
+						gdep.Source = packagelockFile
+						//isDev := false
+						for k2, v2 := range v1.(map[string]any) {
+							if k2 == "version" {
+								gdep.Version = v2.(string)
+							}
+						}
 						yes := false
-						for key := range depMap {
-							if strings.HasSuffix(k1, key) {
+						for key, value := range depMap {
+							v2 := strings.Replace(value.(string), "^", "", 1)
+							if k1 == key && v2 == gdep.Version {
 								yes = true
 								break
 							}
@@ -152,17 +165,22 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						} else {
 							gdep.Direct = false
 						}
-						gdep.Type = "npm"
-						gdep.Source = packagelockFile
-						//isDev := false
 
-						for k2, v2 := range v1.(map[string]any) {
-							if k2 == "version" {
-								gdep.Version = v2.(string)
+						isDuplicate := true
+						v, ok := duplicateDep[k1]
+						if !ok {
+							isDuplicate = false
+						} else {
+							if v.(string) != gdep.Version {
+								isDuplicate = false
 							}
 						}
+						if !isDuplicate {
+							gdeps = append(gdeps, gdep)
+						}
+
 						//if !isDev {
-						gdeps = append(gdeps, gdep)
+						//gdeps = append(gdeps, gdep)
 						//}
 
 					}
@@ -191,30 +209,13 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 							gdep.Dependencies = dependencies.(map[string]any)
 
 						}
-
-						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
-						//if strings.Contains(k1, "node_modules/") {
-						//k1 = strings.Replace(k1, "node_modules/", "", 1)
-						//}
 						li := strings.LastIndex(k1, "node_modules/")
 						if li != -1 {
 							li = li + len("node_modules/")
 							k1 = k1[li:]
 						}
 						gdep.Name = k1
-						//k1s := strings.Split(k1, "/") //
-						yes := false
-						for key := range depMap {
-							if strings.HasSuffix(k1, key) {
-								yes = true
-								break
-							}
-						}
-						if yes {
-							gdep.Direct = true
-						} else {
-							gdep.Direct = false
-						}
+
 						gdep.Type = "npm"
 						gdep.Source = packagelockFile
 						isDev := false
@@ -226,7 +227,30 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 								isDev = true
 							}
 						}
-						if !isDev {
+
+						yes := false
+						for key, value := range depMap {
+							v2 := strings.Replace(value.(string), "^", "", 1)
+							if k1 == key && v2 == gdep.Version {
+								yes = true
+								break
+							}
+						}
+						if yes {
+							gdep.Direct = true
+						} else {
+							gdep.Direct = false
+						}
+						isDuplicate := true
+						v, ok := duplicateDep[k1]
+						if !ok {
+							isDuplicate = false
+						} else {
+							if v.(string) != gdep.Version {
+								isDuplicate = false
+							}
+						}
+						if !isDev && !isDuplicate {
 							gdeps = append(gdeps, gdep)
 						}
 					}
@@ -252,30 +276,13 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 							glog.Infoln(dependencies)
 							gdep.Dependencies = dependencies.(map[string]any)
 						}
-
-						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
-						//if strings.Contains(k1, "node_modules/") {
-						//k1 = strings.Replace(k1, "node_modules/", "", 1)
-						//}
 						li := strings.LastIndex(k1, "node_modules/")
 						if li != -1 {
 							li = li + len("node_modules/")
 							k1 = k1[li:]
 						}
 						gdep.Name = k1
-						//k1s := strings.Split(k1, "/") //
-						yes := false
-						for key := range depMap {
-							if strings.HasSuffix(k1, key) {
-								yes = true
-								break
-							}
-						}
-						if yes {
-							gdep.Direct = true
-						} else {
-							gdep.Direct = false
-						}
+
 						gdep.Type = "npm"
 						gdep.Source = packagelockFile
 						//isDev := false
@@ -285,9 +292,31 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 								gdep.Version = v2.(string)
 							}
 						}
-						//if !isDev {
-						gdeps = append(gdeps, gdep)
-						//}
+						yes := false
+						for key, value := range depMap {
+							v2 := strings.Replace(value.(string), "^", "", 1)
+							if k1 == key && v2 == gdep.Version {
+								yes = true
+								break
+							}
+						}
+						if yes {
+							gdep.Direct = true
+						} else {
+							gdep.Direct = false
+						}
+						isDuplicate := true
+						v, ok := duplicateDep[k1]
+						if !ok {
+							isDuplicate = false
+						} else {
+							if v.(string) != gdep.Version {
+								isDuplicate = false
+							}
+						}
+						if !isDuplicate {
+							gdeps = append(gdeps, gdep)
+						}
 
 					}
 				}

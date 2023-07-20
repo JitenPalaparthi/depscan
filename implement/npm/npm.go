@@ -72,7 +72,12 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 
 						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
 						//if strings.Contains(k1, "node_modules/") {
-						k1 = strings.Replace(k1, "node_modules/", "", 1)
+						//k1 = strings.Replace(k1, "node_modules/", "", 1)
+						li := strings.LastIndex(k1, "node_modules/")
+						if li != -1 {
+							li = li + len("node_modules/") - 1
+							k1 = k1[li:]
+						}
 						//}
 
 						gdep.Name = k1
@@ -128,7 +133,12 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 
 						}
 						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
-						k1 = strings.Replace(k1, "node_modules/", "", 1)
+						//k1 = strings.Replace(k1, "node_modules/", "", 1)
+						li := strings.LastIndex(k1, "node_modules/")
+						if li != -1 {
+							li = li + len("node_modules/") - 1
+							k1 = k1[li:]
+						}
 						gdep.Name = k1
 						yes := false
 						for key := range depMap {
@@ -184,9 +194,13 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 
 						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
 						//if strings.Contains(k1, "node_modules/") {
-						k1 = strings.Replace(k1, "node_modules/", "", 1)
+						//k1 = strings.Replace(k1, "node_modules/", "", 1)
 						//}
-
+						li := strings.LastIndex(k1, "node_modules/")
+						if li != -1 {
+							li = li + len("node_modules/") - 1
+							k1 = k1[li:]
+						}
 						gdep.Name = k1
 						//k1s := strings.Split(k1, "/") //
 						yes := false
@@ -241,9 +255,13 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 
 						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
 						//if strings.Contains(k1, "node_modules/") {
-						k1 = strings.Replace(k1, "node_modules/", "", 1)
+						//k1 = strings.Replace(k1, "node_modules/", "", 1)
 						//}
-
+						li := strings.LastIndex(k1, "node_modules/")
+						if li != -1 {
+							li = li + len("node_modules/") - 1
+							k1 = k1[li:]
+						}
 						gdep.Name = k1
 						//k1s := strings.Split(k1, "/") //
 						yes := false

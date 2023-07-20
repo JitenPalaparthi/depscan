@@ -75,7 +75,7 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						//k1 = strings.Replace(k1, "node_modules/", "", 1)
 						li := strings.LastIndex(k1, "node_modules/")
 						if li != -1 {
-							li = li + len("node_modules/") - 1
+							li = li + len("node_modules/")
 							k1 = k1[li:]
 						}
 						//}
@@ -136,7 +136,7 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						//k1 = strings.Replace(k1, "node_modules/", "", 1)
 						li := strings.LastIndex(k1, "node_modules/")
 						if li != -1 {
-							li = li + len("node_modules/") - 1
+							li = li + len("node_modules/")
 							k1 = k1[li:]
 						}
 						gdep.Name = k1
@@ -198,7 +198,7 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						//}
 						li := strings.LastIndex(k1, "node_modules/")
 						if li != -1 {
-							li = li + len("node_modules/") - 1
+							li = li + len("node_modules/")
 							k1 = k1[li:]
 						}
 						gdep.Name = k1
@@ -259,7 +259,7 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 						//}
 						li := strings.LastIndex(k1, "node_modules/")
 						if li != -1 {
-							li = li + len("node_modules/") - 1
+							li = li + len("node_modules/")
 							k1 = k1[li:]
 						}
 						gdep.Name = k1

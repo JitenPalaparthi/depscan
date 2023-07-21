@@ -41,7 +41,7 @@
     {
       "lang": "Php",
       "depTool": "composer",
-      "fileNames": ["composer.json"],
+      "fileNames": ["composer.lock"],
       "fileExt":".php"
     }
     ,

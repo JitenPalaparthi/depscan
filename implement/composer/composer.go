@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/JitenPalaparthi/depscan/helper"
 	scan "github.com/JitenPalaparthi/depscan/scanner"
 	"github.com/golang/glog"
 )
@@ -13,7 +14,8 @@ type Composer struct {
 	FilePaths []string
 }
 
-func (c *Composer) Scan() ([]scan.Dep, error) {
+// This implementation is for composer.json file
+func (c *Composer) ScanFor() ([]scan.Dep, error) {
 	gdeps := make([]scan.Dep, 0)
 	inFile, err := os.Open(c.FilePaths[0])
 	if err != nil {
@@ -52,5 +54,42 @@ func (c *Composer) Scan() ([]scan.Dep, error) {
 			gdeps = append(gdeps, gdep)
 		}
 	}
+	return gdeps, nil
+}
+
+// This implementation is for composer.lock
+func (c *Composer) Scan() ([]scan.Dep, error) {
+	gdeps := make([]scan.Dep, 0)
+	duplicateDep := make(map[string][]string)
+	mp, err := helper.FileToMap(c.FilePaths[0])
+	if err != nil {
+		return nil, err
+	}
+	v1, ok1 := mp["packages"]
+	if ok1 {
+		for _, v2 := range v1.([]any) {
+			gdep := scan.Dep{}
+			gdep.Direct = true
+			gdep.Type = "composer"
+			gdep.Name = v2.(map[string]any)["name"].(string)
+			gdep.Version = v2.(map[string]any)["version"].(string)
+			gdep.Source = c.FilePaths[0]
+
+			gdep.Dependencies = v2.(map[string]any)["require"].(map[string]any)
+			v3, ok3 := duplicateDep[gdep.Name]
+
+			if !ok3 {
+				duplicateDep[gdep.Name] = append(duplicateDep[gdep.Name], gdep.Version)
+				gdeps = append(gdeps, gdep)
+			} else {
+				if !helper.IsElementExist(v3, gdep.Name) {
+					duplicateDep[gdep.Name] = append(duplicateDep[gdep.Name], gdep.Version)
+					gdeps = append(gdeps, gdep)
+				}
+			}
+
+		}
+	}
+
 	return gdeps, nil
 }

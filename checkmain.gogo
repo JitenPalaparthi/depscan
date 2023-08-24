@@ -1,10 +1,9 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-	"io/fs"
-	"path/filepath"
+
+	"github.com/JitenPalaparthi/depscan/helper"
 )
 
 var (
@@ -14,20 +13,42 @@ var (
 
 func main() {
 
-	flag.StringVar(&root, "path", ".", "--path=./")
-	flag.Parse()
+	//
+	mp, err := helper.FileToMap("test_repos/composer/sample2/composer.lock")
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		//fmt.Println(mp)
+	}
+	//depMap := make(map[string]any)
+	//	depMap := mp["packages"]
+	// for _, v1 := range mp {
+	// 	for k2, v2 := range v1.(map[string]any) {
+	// 		//fmt.Println(k2, "--->", v2)
+	// 		str := fmt.Sprint(v2)
+	// 		str = strings.Replace(str, "map[", "", -1)
+	// 		str = strings.Replace(str, "]", "", -1)
+	// 		str = strings.Replace(str, "locked:", "", -2)
+	// 		fmt.Println(k2, "----->>>", str)
+	// 		v3, ok3 := depMap[k2]
+	// 		if ok3 {
+	// 			if !helper.IsElementExist(v3, str) {
+	// 				depMap[k2] = append(depMap[k2], str)
+	// 			}
+	// 		} else {
+	// 			depMap[k2] = append(depMap[k2], str)
+	// 		}
+	// 	}
+	// }
 
-	//fmt.Println(root)
-	filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
-		//fmt.Println(path)
-		//fmt.Println(filepath.Base(path))
-		fmt.Println(filepath.Dir(path))
-		if d.IsDir() {
-			dirCount++
-		} else {
-			fileCount++
+	v1, ok1 := mp["packages"]
+	if ok1 {
+		for _, v2 := range v1.([]any) {
+			name := v2.(map[string]any)["name"].(string)
+			version := v2.(map[string]any)["version"].(string)
+			fmt.Println(name, "-->", version)
+
 		}
-		return nil
-	})
-
+	}
+	//fmt.Println(mp["packages"])
 }

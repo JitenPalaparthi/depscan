@@ -82,7 +82,7 @@ func (c *Composer) Scan() ([]scan.Dep, error) {
 				duplicateDep[gdep.Name] = append(duplicateDep[gdep.Name], gdep.Version)
 				gdeps = append(gdeps, gdep)
 			} else {
-				if !helper.IsElementExist(v3, gdep.Name) {
+				if !helper.IsElementExist(v3, gdep.Version) {
 					duplicateDep[gdep.Name] = append(duplicateDep[gdep.Name], gdep.Version)
 					gdeps = append(gdeps, gdep)
 				}

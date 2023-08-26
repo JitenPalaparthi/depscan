@@ -13,4 +13,5 @@ var (
 	ErrUnsupportedNPMVersion   = errors.New("unsupported npm version.Currently it supports only lockfileVersion-1,2 and 3 only.Old formats are not supported")
 	ErrUnsupportedFile         = errors.New("unsupported file")
 	ErrNoPackageFileFound      = errors.New("no package dependency file found")
+	ErrInvalidNoOfFiles        = errors.New("invalid number of files")
 )

@@ -3,7 +3,6 @@ package implement
 import (
 	"encoding/json"
 	"io/fs"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -85,7 +84,9 @@ func (i *Implement) Feed() error {
 			if helper.IsElementExist(i.Config.GetDepFiles(), d.Name()) {
 				i.PathSets[filepath.Dir(p)] = append(i.PathSets[filepath.Dir(p)], p)
 				Dep := i.Config.GetDepManagerByFileName(d.Name()) // added to add language even if no js or other programming files. Just based on the Dep file. For example requirements.txt
-				i.Languages = append(i.Languages, Dep.Lang)       //
+				if !helper.IsElementExist(i.Languages, Dep.Lang) {
+					i.Languages = append(i.Languages, Dep.Lang)
+				} //
 			}
 
 			// The below code does these things.
@@ -99,7 +100,9 @@ func (i *Implement) Feed() error {
 				if !helper.IsElementExist(i.Exts, filepath.Ext(d.Name())) {
 					i.Exts = append(i.Exts, filepath.Ext(d.Name()))
 					Dep := i.Config.GetDepManagerByExt(filepath.Ext(d.Name()))
-					i.Languages = append(i.Languages, Dep.Lang)
+					if !helper.IsElementExist(i.Languages, Dep.Lang) {
+						i.Languages = append(i.Languages, Dep.Lang)
+					}
 				}
 			}
 		}
@@ -140,13 +143,13 @@ func (i *Implement) Write(deps []scanner.Dep) error {
 		if err != nil {
 			return err
 		}
-		return ioutil.WriteFile(i.Outfile, data, 0655)
+		return os.WriteFile(i.Outfile, data, 0655)
 	case ".yaml", ".yml":
 		data, err := yaml.Marshal(output)
 		if err != nil {
 			return err
 		}
-		return ioutil.WriteFile(i.Outfile, data, 0655)
+		return os.WriteFile(i.Outfile, data, 0655)
 	}
 	return nil
 }

@@ -48,7 +48,7 @@
     {
       "lang": "Go",
       "depTool": "mod",
-      "fileNames": ["go.sum"],
+      "fileNames": ["go.sum","go.mod"],
       "fileExt":".go"
     }
   ]

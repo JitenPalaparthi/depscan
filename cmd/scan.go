@@ -10,6 +10,7 @@ import (
 	"github.com/JitenPalaparthi/depscan/config"
 	"github.com/JitenPalaparthi/depscan/implement"
 	composerp "github.com/JitenPalaparthi/depscan/implement/composer"
+	gomodp "github.com/JitenPalaparthi/depscan/implement/gomod"
 	gradlep "github.com/JitenPalaparthi/depscan/implement/gradle"
 	mavenp "github.com/JitenPalaparthi/depscan/implement/maven"
 	npmp "github.com/JitenPalaparthi/depscan/implement/npm"
@@ -76,6 +77,7 @@ var scanCmd = &cobra.Command{
 			gradle   *gradlep.Gradle
 			maven    *mavenp.Maven
 			composer *composerp.Composer
+			gomod    *gomodp.Go
 		)
 		for _, value := range impl.PathSets {
 			depManager := cnfg.GetDepManagerByFileName(filepath.Base(value[0]))
@@ -114,6 +116,11 @@ var scanCmd = &cobra.Command{
 					composer.FilePaths = append(composer.FilePaths, value...)
 					iscanners = append(iscanners, composer)
 					glog.Infoln("Found composer as dependency manager.The Filepath is ", value[0])
+				case "mod":
+					gomod = new(gomodp.Go)
+					gomod.FilePaths = append(gomod.FilePaths, value...)
+					iscanners = append(iscanners, gomod)
+					glog.Infoln("Found go mod as dependency manager.The Filepath is ", value[0])
 				default:
 					glog.Infoln("Unimplemented tool")
 				}

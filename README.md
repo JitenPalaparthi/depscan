@@ -2,10 +2,18 @@
 # depscan
 
 - depscan is dependency/package manager scanner.It scans dependency files of respective programming languages.
-- maven Java    - pom.xml
-- gradle Java   - build.gradle
-- pip Python    - requirements or requirements.txt
-- npm Node      - package-lock.json [it supports lockfileVersion 1 and 2]
+
+| Language | Tool | File(s)|
+|----------|------|--------|
+|java|maven|pom.xml|
+|java|gradle|build.gradle|
+|python|pip|requirements|
+|python|pipenv|Pipfile.lock|
+|python|poetry|poetry.lock|
+|node|npm|package-lock.json lockfile version 1 & 2|
+|php|composer|composer.lock|
+|go|go mod|go.mod,go.sum|
+
 
 ## How to install
 

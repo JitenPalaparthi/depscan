@@ -15,8 +15,8 @@ import (
 	mavenp "github.com/JitenPalaparthi/depscan/implement/maven"
 	npmp "github.com/JitenPalaparthi/depscan/implement/npm"
 	pipp "github.com/JitenPalaparthi/depscan/implement/pip"
+	pipenvp "github.com/JitenPalaparthi/depscan/implement/pipenv"
 	poetryp "github.com/JitenPalaparthi/depscan/implement/poetry"
-
 	scnr "github.com/JitenPalaparthi/depscan/scanner"
 	"github.com/golang/glog"
 	"github.com/spf13/cobra"
@@ -74,6 +74,7 @@ var scanCmd = &cobra.Command{
 		iscanners := make([]scnr.Scanner, 0)
 		var (
 			pip      *pipp.Pip
+			pipenv   *pipenvp.Pipenv
 			poetry   *poetryp.Poetry
 			npm      *npmp.Npm
 			gradle   *gradlep.Gradle
@@ -95,6 +96,12 @@ var scanCmd = &cobra.Command{
 					pip.FilePaths = append(pip.FilePaths, value...)
 					iscanners = append(iscanners, pip)
 					glog.Infoln("Found pip as dependency manager.The Filepath is ", value[0])
+				case "pipenv":
+					pipenv = new(pipenvp.Pipenv)
+					pipenv.FilePaths = append(pipenv.FilePaths, value...)
+					iscanners = append(iscanners, pipenv)
+					glog.Infoln("Found pipenv as dependency manager.The Filepath is ", value[0])
+
 				case "poetry":
 					poetry = new(poetryp.Poetry)
 					poetry.FilePaths = append(poetry.FilePaths, value...)

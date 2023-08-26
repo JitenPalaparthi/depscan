@@ -66,6 +66,7 @@ func (c *Composer) Scan() ([]scan.Dep, error) {
 		return nil, err
 	}
 	v1, ok1 := mp["packages"]
+	//fmt.Println("--------------", v1)
 	if ok1 {
 		for _, v2 := range v1.([]any) {
 			gdep := scan.Dep{}
@@ -75,7 +76,10 @@ func (c *Composer) Scan() ([]scan.Dep, error) {
 			gdep.Version = v2.(map[string]any)["version"].(string)
 			gdep.Source = c.FilePaths[0]
 
-			gdep.Dependencies = v2.(map[string]any)["require"].(map[string]any)
+			v4, ok4 := v2.(map[string]any)["require"]
+			if ok4 {
+				gdep.Dependencies = v4.(map[string]any)
+			}
 			v3, ok3 := duplicateDep[gdep.Name]
 
 			if !ok3 {

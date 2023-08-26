@@ -3,6 +3,7 @@ module github.com/JitenPalaparthi/depscan
 go 1.20
 
 require (
+	github.com/BurntSushi/toml v1.3.2
 	github.com/blocktop/go-glog-cobra v0.0.0-20181004141147-1a2e8060f5d2
 	github.com/golang/glog v1.1.1
 	github.com/spf13/cobra v1.7.0

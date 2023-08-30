@@ -1,7 +1,10 @@
 package gradle
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/JitenPalaparthi/depscan/helper"
@@ -13,55 +16,53 @@ type Gradle struct {
 	FilePaths []string
 }
 
-// This implementation is based on gradle.build
-// The implmentation has been changed from gradle.build to dependencies.lock file
-// func (g *Gradle) Scan() ([]scan.Dep, error) {
-// 	gdeps := make([]scan.Dep, 0)
-// 	inFile, err := os.Open(g.FilePaths[0])
-// 	if err != nil {
-// 		glog.Infoln(err)
-// 		return nil, nil
-// 	}
-// 	defer inFile.Close()
+func (g *Gradle) ScanForGradleBuild(filepath string) ([]scan.Dep, error) {
+	gdeps := make([]scan.Dep, 0)
+	inFile, err := os.Open(filepath)
+	if err != nil {
+		glog.Infoln(err)
+		return nil, nil
+	}
+	defer inFile.Close()
 
-// 	glog.Infoln("---------------XXXXX", inFile)
-// 	scanner := bufio.NewScanner(inFile)
-// 	found := false
-// 	//lines := make([]string, 0)
-// 	for scanner.Scan() {
-// 		line := scanner.Text()
-// 		//line = strings.TrimSpace(line)
-// 		if strings.Contains(line, "}") {
-// 			found = false
-// 		}
+	glog.Infoln("---------------XXXXX", inFile)
+	scanner := bufio.NewScanner(inFile)
+	found := false
+	//lines := make([]string, 0)
+	for scanner.Scan() {
+		line := scanner.Text()
+		//line = strings.TrimSpace(line)
+		if strings.Contains(line, "}") {
+			found = false
+		}
 
-// 		if strings.Contains(strings.ReplaceAll(line, " ", ""), "dependencies{") {
-// 			glog.Infoln(line)
-// 			found = true
-// 			continue
-// 		}
-// 		if found {
-// 			line = strings.Replace(line, `'`, `"`, -1) //fix for single quote
-// 			fi := strings.Index(line, `"`)
-// 			li := strings.LastIndex(line, `"`)
-// 			//lines = append(lines, line[fi+1:li])
-// 			gdep := scan.Dep{}
-// 			gdep.Direct = true
-// 			gdep.Type = "gradle"
-// 			gdep.Name = line[fi+1 : li]
-// 			//todo discuss and implement
-// 			//gdep.Version = strs[1] // Unable to determine version. Some lines do not have version
-// 			gdep.Source = g.FilePaths[0]
-// 			gdeps = append(gdeps, gdep)
-// 		}
-// 	}
-// 	return gdeps, nil
-// }
+		if strings.Contains(strings.ReplaceAll(line, " ", ""), "dependencies{") {
+			glog.Infoln(line)
+			found = true
+			continue
+		}
+		if found {
+			line = strings.Replace(line, `'`, `"`, -1) //fix for single quote
+			fi := strings.Index(line, `"`)
+			li := strings.LastIndex(line, `"`)
+			//lines = append(lines, line[fi+1:li])
+			gdep := scan.Dep{}
+			gdep.Direct = true
+			gdep.Type = "gradle"
+			gdep.Name = line[fi+1 : li]
+			//todo discuss and implement
+			//gdep.Version = strs[1] // Unable to determine version. Some lines do not have version
+			gdep.Source = filepath
+			gdeps = append(gdeps, gdep)
+		}
+	}
+	return gdeps, nil
+}
 
-func (g *Gradle) Scan() ([]scan.Dep, error) {
+func (g *Gradle) ScanForDependencyLock(filepath string) ([]scan.Dep, error) {
 	gdeps := make([]scan.Dep, 0)
 
-	mp, err := helper.FileToMap(g.FilePaths[0])
+	mp, err := helper.FileToMap(filepath)
 	if err != nil {
 		glog.Infoln(err)
 		return nil, err
@@ -93,11 +94,28 @@ func (g *Gradle) Scan() ([]scan.Dep, error) {
 				gdep.Type = "gradle"
 				gdep.Name = k2
 				gdep.Version = str
-				gdep.Source = g.FilePaths[0]
+				gdep.Source = filepath
 				gdeps = append(gdeps, gdep)
 			}
 		}
 	}
 
 	return gdeps, nil
+}
+
+func (g *Gradle) Scan() ([]scan.Dep, error) {
+	if len(g.FilePaths) == 1 {
+		if filepath.Base(g.FilePaths[0]) == "dependencies.lock" {
+			return g.ScanForDependencyLock(g.FilePaths[0])
+		} else if filepath.Base(g.FilePaths[0]) == "build.gradle" {
+			return g.ScanForGradleBuild(g.FilePaths[0])
+		}
+	} else if len(g.FilePaths) == 2 {
+		if filepath.Base(g.FilePaths[0]) == "dependencies.lock" {
+			return g.ScanForDependencyLock(g.FilePaths[0])
+		} else if filepath.Base(g.FilePaths[1]) == "dependencies.lock" {
+			return g.ScanForDependencyLock(g.FilePaths[1])
+		}
+	}
+	return nil, nil
 }

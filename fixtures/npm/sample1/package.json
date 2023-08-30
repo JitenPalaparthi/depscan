@@ -1,0 +1,47 @@
+{
+  "name": "mead-nutrient-calculator",
+  "version": "0.1.0",
+  "private": false,
+  "dependencies": {
+    "gh-pages": "^2.0.1",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-scripts": "2.1.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "description": "Mead Calculator for the right nutrient addition regimen.",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmicht/mead-nutrient-calculator.git"
+  },
+  "keywords": [
+    "mead-calculator",
+    "nutrient-calculator",
+    "calculator",
+    "mead"
+  ],
+  "author": "Michelle Torres <hola@michelletorres.mx> (https://michelletorres.mx)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nmicht/mead-nutrient-calculator/issues"
+  },
+  "homepage": "https://nmicht.github.io/mead-nutrient-calculator/"
+}

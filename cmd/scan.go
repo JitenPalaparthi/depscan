@@ -33,7 +33,7 @@ func init() {
 	scanCmd.Flags().StringVarP(&path, "path", "p", ".", "user has to provide path.Ideally this is a git repository path")
 	scanCmd.Flags().StringVarP(&format, "format", "f", "json", "output file format. We support two formats json|yaml")
 	scanCmd.Flags().Uint8VarP(&depth, "depth", "d", 3, "the depth of directory recursion for file scans")
-	scanCmd.Flags().StringVarP(&outFile, "out", "o", "output", "user has to provide output file name")
+	scanCmd.Flags().StringVarP(&outFile, "out", "o", "", "user has to provide output file name")
 
 	rootCmd.AddCommand(scanCmd)
 }
@@ -52,12 +52,28 @@ var scanCmd = &cobra.Command{
 
 		glog.Infoln("config object:", cnfg)
 		// What if outfile has format?
-		impl, err := implement.New(cnfg, path, fmt.Sprint(strings.TrimSuffix(outFile, filepath.Ext(outFile)), ".", format), depth) // create an instance of implement
-		if err != nil {
-			glog.Errorln(err)
-			return
+		var (
+			impl *implement.Implement
+		)
+
+		// if not output file is given , there need not to be any output as a file, print it int the stdout
+		if outFile == "" {
+			format = ""
+			impl, err = implement.New(cnfg, path, "", depth) // create an instance of implement
+			if err != nil {
+				glog.Errorln(err)
+				return
+			}
+			glog.Infoln("implement object:", impl)
+
+		} else {
+			impl, err = implement.New(cnfg, path, fmt.Sprint(strings.TrimSuffix(outFile, filepath.Ext(outFile)), ".", format), depth) // create an instance of implement
+			if err != nil {
+				glog.Errorln(err)
+				return
+			}
+			glog.Infoln("implement object:", impl)
 		}
-		glog.Infoln("implement object:", impl)
 
 		err = impl.Feed() // Feed method feeds required data for the implement object3
 		if err != nil {

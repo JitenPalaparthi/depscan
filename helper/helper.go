@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"bytes"
 	"encoding/json"
 	"io/ioutil"
 )
@@ -25,4 +26,13 @@ func FileToMap(filename string) (map[string]any, error) {
 		return nil, err
 	}
 	return mp, nil
+}
+
+func JsonPrettyPrint(in string) string {
+	var out bytes.Buffer
+	err := json.Indent(&out, []byte(in), "", "\t")
+	if err != nil {
+		return in
+	}
+	return out.String()
 }

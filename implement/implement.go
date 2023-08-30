@@ -2,6 +2,7 @@ package implement
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -42,9 +43,10 @@ func New(config *config.Config, path string, outfile string, depth uint8) (*Impl
 	// if depth < 0 {
 	// 	return nil, errors.New("invalid depth")
 	// }
-	if outfile == "" {
-		return nil, ErrInvalidOutfile
-	}
+	// if outfile == "" {
+	// 	return nil, ErrInvalidOutfile
+	// }
+
 	if filepath.Ext(outfile) == "json" || filepath.Ext(outfile) == "yaml" || filepath.Ext(outfile) == "yml" {
 		return nil, ErrInvalidOutfileFormat
 	}
@@ -140,6 +142,17 @@ func (i *Implement) Write(deps []scanner.Dep) error {
 	ext := filepath.Ext(i.Outfile)
 
 	switch ext {
+
+	case "":
+		data, err := json.Marshal(output)
+		if err != nil {
+			return err
+		}
+		//glog.Info(helper.JsonPrettyPrint(string(data)))
+		fmt.Println("-------------------------Output----------------------")
+		fmt.Println(helper.JsonPrettyPrint(string(data)))
+		fmt.Println("--------------------End of Output--------------------")
+		return nil
 	case ".json":
 		data, err := json.Marshal(output)
 		if err != nil {

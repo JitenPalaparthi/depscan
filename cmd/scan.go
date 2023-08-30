@@ -59,15 +59,11 @@ var scanCmd = &cobra.Command{
 		}
 		glog.Infoln("implement object:", impl)
 
-		err = impl.Feed() // feed required data for the implement object3
+		err = impl.Feed() // Feed method feeds required data for the implement object3
 		if err != nil {
 			glog.Errorln(err)
 			return
 		}
-
-		// fmt.Println("<><>><><><><><<><><")
-		// fmt.Println(impl.PathSets)
-		// fmt.Println("<><><><><>>><><><<<>")
 
 		glog.Infoln("implement object after feed:", impl)
 

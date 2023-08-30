@@ -61,13 +61,13 @@ func New(config *config.Config, path string, outfile string, depth uint8) (*Impl
 // Feed is to feed data to the Implement object
 // step-2
 func (i *Implement) Feed() error {
-	if i.Config == nil || i.Path == "" {
+	if i.Config == nil || i.Path == "" { // nopath no config ? do nothing
 		return ErrNewImplement
 	}
-	maxDepth := strings.Count(i.Path, string(os.PathSeparator)) + int(i.Depth)
+	maxDepth := strings.Count(i.Path, string(os.PathSeparator)) + int(i.Depth) // depth is evaluated using this line of code
 	glog.Infoln("evaluating depth param.Current depth value:", i.Depth)
 	filepath.WalkDir(i.Path, func(p string, d fs.DirEntry, err error) error {
-		if d.IsDir() && strings.Count(p, string(os.PathSeparator)) > maxDepth {
+		if d.IsDir() && strings.Count(p, string(os.PathSeparator)) > maxDepth { // iterating more than the depth , then just skip
 			glog.Info("skip path(s):", p)
 			return fs.SkipDir
 		}
@@ -76,6 +76,7 @@ func (i *Implement) Feed() error {
 		} else {
 			i.FileCount++
 		}
+		// any directory to be ignored , do not iterate then this code does that
 		if d.IsDir() && helper.IsElementExist(i.Config.IgnoreDirs, d.Name()) {
 			glog.Infoln("This is an ignore directory so skipping it. path:", p)
 			return fs.SkipDir
@@ -113,6 +114,7 @@ func (i *Implement) Feed() error {
 
 // ScanAll scans all language implementations based on Scanner interface
 // step-3
+// any object that implements Scanner interface can be passed here
 func (i *Implement) ScanAll(iScanners ...scanner.Scanner) ([]scanner.Dep, error) {
 	var deps []scanner.Dep
 	for _, s := range iScanners {

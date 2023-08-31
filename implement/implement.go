@@ -149,9 +149,9 @@ func (i *Implement) Write(deps []scanner.Dep) error {
 			return err
 		}
 		//glog.Info(helper.JsonPrettyPrint(string(data)))
-		fmt.Println("-------------------------Output----------------------")
+		//fmt.Println("-------------------------Output----------------------")
 		fmt.Println(helper.JsonPrettyPrint(string(data)))
-		fmt.Println("--------------------End of Output--------------------")
+		//fmt.Println("--------------------End of Output--------------------")
 		return nil
 	case ".json":
 		data, err := json.Marshal(output)

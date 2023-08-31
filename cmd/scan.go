@@ -103,7 +103,7 @@ var scanCmd = &cobra.Command{
 			//if depManager != nil && helper.IsElementExist(impl.Exts, depManager.FileExt) {
 			if depManager != nil {
 				switch depManager.DepTool {
-				case "pip":
+				case "pypi":
 					pip = new(pipp.Pip)
 					pip.FilePaths = append(pip.FilePaths, value...)
 					iscanners = append(iscanners, pip)

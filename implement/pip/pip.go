@@ -27,14 +27,15 @@ func (p *Pip) Scan() ([]scan.Dep, error) {
 	for scanner.Scan() {
 		line := scanner.Text()
 		line = strings.TrimSpace(line)
-		if line[0] == '#' {
+
+		if len(line) > 0 && line[0] == '#' {
 			continue
 		}
 		strs := strings.Split(line, "==")
 		if len(strs) == 2 {
 			gdep := scan.Dep{}
 			gdep.Direct = true
-			gdep.Type = "pip"
+			gdep.Type = "pypi"
 			gdep.Name = strs[0]
 			gdep.Version = strs[1]
 			gdep.Source = p.FilePaths[0]
@@ -42,7 +43,7 @@ func (p *Pip) Scan() ([]scan.Dep, error) {
 		} else if !strings.Contains(line, "==") { // There are entries without == as well.i.e no version information
 			gdep := scan.Dep{}
 			gdep.Direct = true
-			gdep.Type = "pip"
+			gdep.Type = "pypi"
 			gdep.Name = strings.TrimSpace(line)
 			gdep.Version = ""
 			gdep.Source = p.FilePaths[0]

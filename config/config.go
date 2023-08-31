@@ -3,7 +3,6 @@ package config
 import (
 	_ "embed"
 	"encoding/json"
-	"fmt"
 
 	"github.com/JitenPalaparthi/depscan/helper"
 )
@@ -51,7 +50,7 @@ func (c *Config) GetDepManagerByExt(ext string) *DepManager {
 func (c *Config) GetDepManagerByFileName(fileName string) *DepManager {
 	for i, v := range c.DepManagers {
 		if helper.IsElementExist(v.FileNames, fileName) {
-			fmt.Println(c.DepManagers[i])
+			//	fmt.Println(c.DepManagers[i])
 			return &c.DepManagers[i]
 		}
 	}

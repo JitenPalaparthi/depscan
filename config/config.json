@@ -22,7 +22,7 @@
     },
     {
       "lang": "Python",
-      "depTool": "pip",
+      "depTool": "pypi",
       "fileNames": ["requirements.txt","requirements"],
       "fileExt": ".py"
     },

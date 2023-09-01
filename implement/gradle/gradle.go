@@ -42,9 +42,17 @@ func (g *Gradle) ScanForGradleBuild(filepath string) ([]scan.Dep, error) {
 			continue
 		}
 		if found {
+
+			if strings.HasPrefix(strings.TrimSpace(line), "//") || len(line) == 0 || line == "" {
+				continue
+			}
 			line = strings.Replace(line, `'`, `"`, -1) //fix for single quote
 			fi := strings.Index(line, `"`)
 			li := strings.LastIndex(line, `"`)
+
+			if li >= len(line) || fi+1 >= li || fi+1 >= len(line) {
+				continue
+			}
 			//lines = append(lines, line[fi+1:li])
 			gdep := scan.Dep{}
 			gdep.Direct = true

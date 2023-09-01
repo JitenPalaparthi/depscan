@@ -3,7 +3,6 @@ package npm
 import (
 	"fmt"
 	"path/filepath"
-	"reflect"
 	"strings"
 
 	"github.com/JitenPalaparthi/depscan/helper"
@@ -55,7 +54,6 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 		} else {
 			if mp["lockfileVersion"].(float64) == 1 {
 				glog.Infoln("This is lockfileVersion:1")
-				fmt.Println(reflect.TypeOf(mp))
 				data := mp["dependencies"]
 				switch data := data.(type) {
 				case map[string]any:
@@ -122,12 +120,10 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 					}
 
 				}
-				//fmt.Println(gdeps)
 				//todo logic for version 1
 			} else if mp["lockfileVersion"].(float64) == 2 || mp["lockfileVersion"].(float64) == 3 {
 				glog.Infoln("This is lockfileVersion:", mp["lockfileVersion"].(float64))
 				data := mp["packages"]
-				//fmt.Println(reflect.TypeOf(data))
 				switch data := data.(type) {
 				case map[string]any:
 					for k1, v1 := range data {
@@ -203,13 +199,11 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 		} else {
 			if mp["lockfileVersion"].(float64) == 1 {
 				glog.Infoln("This is lockfileVersion:1")
-				fmt.Println(reflect.TypeOf(mp))
 				data := mp["dependencies"]
 				switch data := data.(type) {
 				case map[string]any:
 					for k1, v1 := range data {
 						gdep := scan.Dep{}
-						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
 						dependencies, ok := v1.(map[string]any)["dependencies"]
 						if ok {
 							glog.Infoln("<<<<-------Sub-Dependencies--------->>>>")
@@ -269,12 +263,10 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 					}
 
 				}
-				//fmt.Println(gdeps)
 				//todo logic for version 1
 			} else if mp["lockfileVersion"].(float64) == 2 || mp["lockfileVersion"].(float64) == 3 {
 				glog.Infoln("This is lockfileVersion:", mp["lockfileVersion"].(float64))
 				data := mp["packages"]
-				//fmt.Println(reflect.TypeOf(data))
 				switch data := data.(type) {
 				case map[string]any:
 					for k1, v1 := range data {
@@ -282,7 +274,6 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 							continue
 						}
 						gdep := scan.Dep{}
-						//fmt.Println("Key-->", k1) // "Type of Value:", reflect.TypeOf(v))
 						dependencies, ok := v1.(map[string]any)["dependencies"]
 						if ok {
 							glog.Infoln("<<<<-------Sub-Dependencies--------->>>>")
@@ -344,7 +335,9 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 		if mp, err := helper.FileToMap(packageFile); err != nil {
 			return nil, err
 		} else {
-			depMap = mp["dependencies"].(map[string]any)
+			if mp["dependencies"] != nil {
+				depMap = mp["dependencies"].(map[string]any)
+			}
 		}
 
 		for k1, v1 := range depMap {

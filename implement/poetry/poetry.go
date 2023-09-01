@@ -1,9 +1,7 @@
 package poetry
 
 import (
-	"fmt"
 	"os"
-	"reflect"
 
 	"log"
 
@@ -30,11 +28,9 @@ func (p *Poetry) Scan() ([]scan.Dep, error) {
 		return nil, err
 	}
 	v1, ok1 := deps["package"]
-	fmt.Println(reflect.TypeOf(v1))
 
 	if ok1 {
 		for _, v2 := range v1.([]map[string]any) {
-			//fmt.Println(key, "--------.", value)
 			if len(v2) > 0 {
 				name, ok2 := v2["name"]
 				version, ok3 := v2["version"]

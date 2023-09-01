@@ -61,9 +61,13 @@ func (m *Maven) Scan() ([]scan.Dep, error) {
 
 	err = xml.Unmarshal([]byte(str), result)
 	if err != nil {
+		if err.Error() == "EOF" {
+			return nil, nil
+		}
 		glog.Infoln(err)
 		return nil, err
 	}
+
 	for _, dependency := range result.Dependencies {
 		gdep := scan.Dep{}
 		gdep.Direct = true

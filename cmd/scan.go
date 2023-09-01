@@ -156,7 +156,8 @@ var scanCmd = &cobra.Command{
 		glog.Infoln("There are/is ", len(iscanners), "of scanners to scan")
 		deps, err := impl.ScanAll(iscanners...)
 		if err != nil {
-			glog.Errorln(err)
+			glog.Info(err)
+			//glog.Errorln(err)
 			return
 		}
 		err = impl.Write(deps)

@@ -15,6 +15,6 @@ var whichCmd = &cobra.Command{
 	Short: "currently it supports Java,Python,JavaScript",
 	Long:  `currently it depscan supports Java(maven|gradle),Python(pip),JavaScript(npm->package-lock.json version 1,2 and 3)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(`currently it depscan supports Java(maven|gradle),Python(pip),JavaScript(npm->package-lock.json version 1,2 and 3)`)
+		fmt.Println(`currently it depscan supports Java(maven|gradle),Python(pip,pipenv,poetry),JavaScript(npm->package-lock.json version 1,2 and 3),go->go mod,php->composer`)
 	},
 }

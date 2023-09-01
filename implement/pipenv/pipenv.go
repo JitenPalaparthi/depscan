@@ -35,7 +35,6 @@ func (p *Pipenv) Scan() ([]scan.Dep, error) {
 			for k2, v2 := range val1.(map[string]any) {
 				switch v2.(type) {
 				case map[string]any:
-					//fmt.Println(v2, "Type:", reflect.TypeOf(v2))
 					gdep := scan.Dep{}
 					gdep.Direct = true
 					gdep.Type = "pipenv"

@@ -133,9 +133,9 @@ func (n *Npm) Scan() ([]scan.Dep, error) {
 
 		switch fileName {
 		case "package-lock.json":
-			fmt.Println("<<<<------------------")
+			//fmt.Println("<<<<------------------")
 			fmt.Println(n.FilePaths)
-			fmt.Println("<<<<------------------")
+			//fmt.Println("<<<<------------------")
 			if mp, err := helper.FileToMap(fileName); err != nil {
 				return nil, err
 			} else {

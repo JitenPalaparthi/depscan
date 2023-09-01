@@ -66,7 +66,6 @@ func (c *Composer) Scan() ([]scan.Dep, error) {
 		return nil, err
 	}
 	v1, ok1 := mp["packages"]
-	//fmt.Println("--------------", v1)
 	if ok1 {
 		for _, v2 := range v1.([]any) {
 			gdep := scan.Dep{}

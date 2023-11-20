@@ -14,9 +14,11 @@ import (
 	gradlep "github.com/JitenPalaparthi/depscan/implement/gradle"
 	mavenp "github.com/JitenPalaparthi/depscan/implement/maven"
 	npmp "github.com/JitenPalaparthi/depscan/implement/npm"
+	nugetp "github.com/JitenPalaparthi/depscan/implement/nuget"
 	pipp "github.com/JitenPalaparthi/depscan/implement/pip"
 	pipenvp "github.com/JitenPalaparthi/depscan/implement/pipenv"
 	poetryp "github.com/JitenPalaparthi/depscan/implement/poetry"
+
 	scnr "github.com/JitenPalaparthi/depscan/scanner"
 	"github.com/golang/glog"
 	"github.com/spf13/cobra"
@@ -93,6 +95,7 @@ var scanCmd = &cobra.Command{
 			maven    *mavenp.Maven
 			composer *composerp.Composer
 			gomod    *gomodp.Go
+			nuget    *nugetp.Nuget
 		)
 		for _, value := range impl.PathSets {
 			depManager := cnfg.GetDepManagerByFileName(filepath.Base(value[0]))
@@ -147,6 +150,12 @@ var scanCmd = &cobra.Command{
 					gomod.FilePaths = append(gomod.FilePaths, value...)
 					iscanners = append(iscanners, gomod)
 					glog.Infoln("Found go mod as dependency manager.The Filepath is ", value[0])
+				case "nuget":
+					nuget = new(nugetp.Nuget)
+					nuget.FilePaths = append(nuget.FilePaths, value...)
+					iscanners = append(iscanners, nuget)
+					glog.Infoln("Found .net nuget as dependency manager.The Filepath is ", value[0])
+
 				default:
 					glog.Infoln("Unimplemented tool")
 				}

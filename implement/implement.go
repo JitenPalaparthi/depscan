@@ -84,7 +84,8 @@ func (i *Implement) Feed() error {
 			return fs.SkipDir
 		}
 		if !d.IsDir() {
-			if helper.IsElementExist(i.Config.GetDepFiles(), d.Name()) {
+			//if helper.IsElementExist(i.Config.GetDepFiles(), d.Name()) {
+			if helper.IsFileAndExtExists(i.Config.GetDepFiles(), d.Name()) {
 				i.PathSets[filepath.Dir(p)] = append(i.PathSets[filepath.Dir(p)], p)
 				Dep := i.Config.GetDepManagerByFileName(d.Name()) // added to add language even if no js or other programming files. Just based on the Dep file. For example requirements.txt
 				if !helper.IsElementExist(i.Languages, Dep.Lang) {

@@ -49,7 +49,7 @@ func (c *Config) GetDepManagerByExt(ext string) *DepManager {
 
 func (c *Config) GetDepManagerByFileName(fileName string) *DepManager {
 	for i, v := range c.DepManagers {
-		if helper.IsElementExist(v.FileNames, fileName) {
+		if helper.IsFileAndExtExists(v.FileNames, fileName) {
 			//	fmt.Println(c.DepManagers[i])
 			return &c.DepManagers[i]
 		}

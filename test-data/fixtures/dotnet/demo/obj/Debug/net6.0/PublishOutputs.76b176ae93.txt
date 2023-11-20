@@ -1,7 +1,0 @@
-/home/jiten/workspace/projects/depscan/test_repos/dotnet/demo/bin/Debug/net6.0/publish/demo
-/home/jiten/workspace/projects/depscan/test_repos/dotnet/demo/bin/Debug/net6.0/publish/appsettings.Development.json
-/home/jiten/workspace/projects/depscan/test_repos/dotnet/demo/bin/Debug/net6.0/publish/appsettings.json
-/home/jiten/workspace/projects/depscan/test_repos/dotnet/demo/bin/Debug/net6.0/publish/demo.dll
-/home/jiten/workspace/projects/depscan/test_repos/dotnet/demo/bin/Debug/net6.0/publish/demo.deps.json
-/home/jiten/workspace/projects/depscan/test_repos/dotnet/demo/bin/Debug/net6.0/publish/demo.runtimeconfig.json
-/home/jiten/workspace/projects/depscan/test_repos/dotnet/demo/bin/Debug/net6.0/publish/demo.pdb

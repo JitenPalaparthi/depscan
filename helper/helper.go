@@ -3,7 +3,9 @@ package helper
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 func IsElementExist(s []string, str string) bool {
@@ -15,8 +17,23 @@ func IsElementExist(s []string, str string) bool {
 	return false
 }
 
+func IsFileAndExtExists(s []string, str string) bool {
+	for _, v := range s {
+		if strings.Contains(v, "*.") {
+			if filepath.Ext(v) == filepath.Ext(str) {
+				//fmt.Println("XXXXXXX---", v, str)
+				return true
+			}
+		}
+		if v == str {
+			return true
+		}
+	}
+	return false
+}
+
 func FileToMap(filename string) (map[string]any, error) {
-	bytes, err := ioutil.ReadFile(filename)
+	bytes, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
